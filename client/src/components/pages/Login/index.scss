@@ -1,0 +1,41 @@
+.login {
+    margin: 10% auto 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &_header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &_card {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        border: 1px solid #c3cfd9;
+        height: 50vh;
+        width: 40%;
+        max-width: 520px;
+        justify-content: center;
+        align-items: center;
+
+        &_email,
+        &_password {
+            width: 70%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #c3cfd9;
+        }
+
+        &_button {
+            width: fit-content;
+            padding: 0.5rem 1.25rem;
+            background-color: #6558f5;
+            color: white;
+            font-weight: bold;
+            border: none;
+        }
+    }
+}
