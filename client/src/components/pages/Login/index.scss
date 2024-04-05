@@ -1,3 +1,5 @@
+@use '../../../styles/colors';
+
 .login {
     margin: 10% auto 0 auto;
     width: 100%;
@@ -12,15 +14,10 @@
     }
 
     &_card {
-        // display: flex;
-        // flex-direction: column;
         gap: 1.5rem;
         border: 1px solid #c3cfd9;
-        height: 50vh;
-        padding: 1.5rem 1rem;
-        // width: 40%;
+        padding: 3rem 3rem;
         max-width: 520px;
-        // justify-content: center;
         align-items: center;
         display: grid;
         align-content: center;
@@ -32,12 +29,12 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            // grid-column: span 2;
 
             &_forgot {
                 &_link {
-                    color: #6558f5;
+                    color: colors.$primary-blue;
                     font-weight: bold;
+                    text-decoration: none;
                 }
             }
         }

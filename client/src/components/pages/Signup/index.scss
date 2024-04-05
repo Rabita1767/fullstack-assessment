@@ -1,5 +1,7 @@
+@use '../../../styles/colors';
+
 .signup {
-    margin: 10% auto 0 auto;
+    margin: 5% auto 0 auto;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -36,8 +38,9 @@
 
             &_forgot {
                 &_link {
-                    color: #6558f5;
+                    color: colors.$primary-blue;
                     font-weight: bold;
+                    text-decoration: none;
                 }
             }
         }

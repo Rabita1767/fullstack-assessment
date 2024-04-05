@@ -4,7 +4,7 @@ import { PasswordInput, Input, Button } from "@mantine/core";
 const Signup: React.FC = () => {
   return (
     <div className="signup">
-      <span className="signup_header">SIGN IN</span>
+      <span className="signup_header">SIGN UP</span>
       <div className="signup_card">
         <Input className="signup_card_first" placeholder="First Name" />
         <Input className="signup_card_last" placeholder="Last Name" />
