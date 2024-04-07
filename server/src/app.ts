@@ -57,7 +57,8 @@ const typeDefs = `#graphql
         id: ID,
         email: String,
         password: String,
-        status: Boolean
+        status: Boolean,
+        user: User
     }
     
     type User{
@@ -81,18 +82,31 @@ const typeDefs = `#graphql
     }
 
     type Query{
-        auth: [Auth],
-        user: [User],
-        product: [Product]
+        auths: [Auth],
+        auth(email: String!): Auth
+        users: [User],
+        products: [Product]
     }
 `;
 
 const resolvers = {
     Query: {
-        auth() {
+        auths() {
             return prisma.auth.findMany({});
         },
-        product() {
+        async auth(_: any, args: any) {
+            console.log(
+                await prisma.auth.findFirst({
+                    where: { email: args.email },
+                    include: { user: true },
+                })
+            );
+            return prisma.auth.findFirst({
+                where: { email: args.email },
+                include: { user: true },
+            });
+        },
+        products() {
             return prisma.product.findMany({});
         },
     },
