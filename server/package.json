@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/server": "^4.10.2",
     "@prisma/client": "^5.7.1",
     "apollo-server": "^3.13.0",
     "cors": "^2.8.5",
