@@ -12,7 +12,7 @@ datasource db {
 
 model Auth {
   id       Int     @id @default(autoincrement())
-  email    String  @db.VarChar(255)
+  email    String  @unique @db.VarChar(255)
   password String  @db.VarChar(255)
   status   Boolean @default(true)
   user     User    @relation(fields: userId, references: id)

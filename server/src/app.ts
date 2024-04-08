@@ -1,14 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import AuthRouter from "./routes/auth";
-import { createHandler } from "graphql-http/lib/use/http";
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
 import { PrismaClient } from "@prisma/client";
-// import { ApolloServer } from "apollo-server";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import http from "http";
+import { GraphQLError } from "graphql";
 
 const app = express();
 dotenv.config();
@@ -18,39 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const prisma = new PrismaClient();
-
-const schema = new GraphQLSchema({
-    query: new GraphQLObjectType({
-        name: "Query",
-        fields: {
-            hello: {
-                type: GraphQLString,
-                resolve: () => "world",
-            },
-        },
-    }),
-});
-
-// Create the GraphQL over HTTP Node request handler
-// const handler = createHandler({ schema });
-
-// Create a HTTP server using the listener on `/graphql`
-// const server = http.createServer((req, res) => {
-//     if (req.url && req.url.startsWith("/graphql")) {
-//         handler(req, res);
-//     } else {
-//         res.writeHead(404).end();
-//     }
-// });
-
-// server.listen(4000);
-// console.log(`Server started at: 4000`);
-
-// app.all("/graphql", createHandler({ schema }));
-
-// app.listen(process.env.SERVER_PORT, () => {
-//     console.log(`Server started at: ${process.env.SERVER_PORT}`);
-// });
 
 const typeDefs = `#graphql
     type Auth{
@@ -69,6 +32,19 @@ const typeDefs = `#graphql
         phone: String
     }
 
+    type AuthInstance{
+        id: ID,
+        first_name: String,
+        email: String,
+        last_name: String,
+        address: String,
+        phone: String
+    }
+
+    type ErrorAuthInstance{
+        error: String,
+    }
+
     type Product{
         id: ID,
         title: String,
@@ -83,7 +59,15 @@ const typeDefs = `#graphql
 
     type Query{
         auths: [Auth],
-        auth(email: String!): Auth
+        login(email: String!, password: String!): Auth
+        signup(
+            first_name: String!, 
+            last_name: String!,
+            address: String!,
+            email: String!,
+            phone: String!,
+            password: String!
+        ): AuthInstance,
         users: [User],
         products: [Product]
     }
@@ -94,17 +78,61 @@ const resolvers = {
         auths() {
             return prisma.auth.findMany({});
         },
-        async auth(_: any, args: any) {
-            console.log(
-                await prisma.auth.findFirst({
-                    where: { email: args.email },
-                    include: { user: true },
-                })
-            );
-            return prisma.auth.findFirst({
-                where: { email: args.email },
+        async login(_: any, args: { email: string; password: string }) {
+            const auth = await prisma.auth.findFirst({
+                where: {
+                    email: args.email,
+                    password: args.password,
+                },
                 include: { user: true },
             });
+            return auth;
+        },
+        async signup(
+            _: any,
+            args: {
+                first_name: string;
+                last_name: string;
+                address: string;
+                email: string;
+                phone: string;
+                password: string;
+            }
+        ) {
+            // try {
+            const checkEmail = await prisma.auth.findFirst({
+                where: {
+                    email: args.email,
+                },
+            });
+            if (checkEmail && checkEmail.email) {
+                throw new GraphQLError("Invalid argument value", {
+                    extensions: {
+                        code: "BAD_USER_INPUT",
+                        argumentName: "id",
+                    },
+                });
+            }
+            const user = await prisma.user.create({
+                data: {
+                    first_name: args.first_name,
+                    last_name: args.last_name,
+                    address: args.address,
+                    phone: args.phone,
+                },
+            });
+            const auth = await prisma.auth.create({
+                data: {
+                    email: args.email,
+                    password: args.password,
+                    userId: user.id,
+                    status: true,
+                },
+            });
+            return { ...user, email: auth.email };
+            // } catch (error) {
+            //     console.log(error);
+            // }
         },
         products() {
             return prisma.product.findMany({});
@@ -112,13 +140,41 @@ const resolvers = {
     },
 };
 
-//int, float, string, boolean, id
+type CustomError = {
+    code: string;
+    message: string;
+};
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    formatError: (formattedError, error) => {
+        if (error instanceof Error) {
+            // console.log(error.name)
+            // return {
+            //   message: error.originalError.message,
+            //   extensions: {
+            //     code: error.originalError.code,
+            //   },
+            // };
+        }
+        console.log(error);
+        return {
+            ...formattedError,
+            message: "Ok",
+        };
+    },
 });
 
-startStandaloneServer(server, {
-    listen: { port: 8000 },
-});
+try {
+    if (process.env.PORT) {
+        startStandaloneServer(server, {
+            listen: { port: Number(process.env.PORT) },
+        });
+        console.log("Successfully started server at: ", process.env.PORT);
+    } else {
+        console.log("No port is defined");
+    }
+} catch (error) {
+    console.log(error);
+}
