@@ -59,7 +59,12 @@ const typeDefs = `#graphql
 
     type Query{
         auths: [Auth],
-        login(email: String!, password: String!): Auth
+        login(email: String!, password: String!): Auth,
+        users: [User],
+        products: [Product]
+    }
+
+    type Mutation{
         signup(
             first_name: String!, 
             last_name: String!,
@@ -68,8 +73,6 @@ const typeDefs = `#graphql
             phone: String!,
             password: String!
         ): AuthInstance,
-        users: [User],
-        products: [Product]
     }
 `;
 
@@ -88,6 +91,11 @@ const resolvers = {
             });
             return auth;
         },
+        products() {
+            return prisma.product.findMany({});
+        },
+    },
+    Mutation: {
         async signup(
             _: any,
             args: {
@@ -99,14 +107,13 @@ const resolvers = {
                 password: string;
             }
         ) {
-            // try {
             const checkEmail = await prisma.auth.findFirst({
                 where: {
                     email: args.email,
                 },
             });
             if (checkEmail && checkEmail.email) {
-                throw new GraphQLError("Invalid argument value", {
+                throw new GraphQLError("Email already exists!", {
                     extensions: {
                         code: "BAD_USER_INPUT",
                         argumentName: "id",
@@ -130,12 +137,6 @@ const resolvers = {
                 },
             });
             return { ...user, email: auth.email };
-            // } catch (error) {
-            //     console.log(error);
-            // }
-        },
-        products() {
-            return prisma.product.findMany({});
         },
     },
 };
@@ -148,22 +149,22 @@ type CustomError = {
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    formatError: (formattedError, error) => {
-        if (error instanceof Error) {
-            // console.log(error.name)
-            // return {
-            //   message: error.originalError.message,
-            //   extensions: {
-            //     code: error.originalError.code,
-            //   },
-            // };
-        }
-        console.log(error);
-        return {
-            ...formattedError,
-            message: "Ok",
-        };
-    },
+    // formatError: (formattedError, error) => {
+    //     if (error instanceof Error) {
+    //         // console.log(error.name)
+    //         // return {
+    //         //   message: error.originalError.message,
+    //         //   extensions: {
+    //         //     code: error.originalError.code,
+    //         //   },
+    //         // };
+    //     }
+    //     console.log(error);
+    //     return {
+    //         ...formattedError,
+    //         message: "Ok",
+    //     };
+    // },
 });
 
 try {
