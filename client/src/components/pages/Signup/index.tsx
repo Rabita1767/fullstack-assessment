@@ -1,3 +1,7 @@
+import {
+  gql,
+  useMutation,
+} from "@apollo/client";
 import "./index.scss";
 import {
   PasswordInput,
@@ -5,7 +9,13 @@ import {
   Button,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { FormEvent, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
+import { title } from "process";
+import { Link } from "react-router-dom";
 
 const Signup: React.FC = () => {
   const [signupData, setSignupData] = useState<{
@@ -26,6 +36,51 @@ const Signup: React.FC = () => {
     phone: "",
   });
 
+  const SIGNUP_QUERY = gql`
+    mutation Mutation(
+      $first_name: String!
+      $last_name: String!
+      $email: String!
+      $password: String!
+      $address: String!
+      $phone: String!
+    ) {
+      signup(
+        first_name: $first_name
+        last_name: $last_name
+        email: $email
+        password: $password
+        address: $address
+        phone: $phone
+      ) {
+        email
+        first_name
+        last_name
+        address
+        phone
+      }
+    }
+  `;
+  const [triggerSignup, { data, error }] =
+    useMutation(SIGNUP_QUERY);
+
+  useEffect(() => {
+    if (error) {
+      notifications.show({
+        title: "Server error",
+        message: error.message,
+        color: "red",
+      });
+    }
+    if(data){
+      notifications.show({
+        title: "Success",
+        message: "Successfully signed up",
+        color: "green",
+      });
+    }
+  }, [error, data]);
+
   const onSignup = (e: FormEvent) => {
     e.preventDefault();
     if (
@@ -39,11 +94,11 @@ const Signup: React.FC = () => {
     ) {
       notifications.show({
         title: "Multiple fields",
-        message: "One or more of the fields are empty",
+        message:
+          "One or more of the fields are empty",
         color: "red",
       });
-    }
-    else if (
+    } else if (
       signupData.password !==
       signupData.confirm_password
     ) {
@@ -51,6 +106,17 @@ const Signup: React.FC = () => {
         title: "Password",
         message: "Passwords do not match",
         color: "red",
+      });
+    } else {
+      triggerSignup({
+        variables: {
+          first_name: signupData.first_name,
+          last_name: signupData.last_name,
+          email: signupData.email,
+          password: signupData.password,
+          address: signupData.address,
+          phone: signupData.phone,
+        },
       });
     }
   };
@@ -151,12 +217,12 @@ const Signup: React.FC = () => {
           </Button>
           <span className="signup_card_action_forgot">
             Already have an account?{" "}
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="signup_card_action_forgot_link"
             >
               Sign in
-            </a>
+            </Link>
           </span>
         </div>
       </form>

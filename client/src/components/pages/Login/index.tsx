@@ -2,6 +2,7 @@ import "./index.scss";
 import { PasswordInput, Input, Button } from "@mantine/core";
 import { useLazyQuery, gql } from "@apollo/client";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState<{
@@ -77,9 +78,9 @@ const Login: React.FC = () => {
           </Button>
           <span className="login_card_action_forgot">
             Don&apos;t have an account?{" "}
-            <a href="/signup" className="login_card_action_forgot_link">
+            <Link to="/signup" className="login_card_action_forgot_link">
               Sign up
-            </a>
+            </Link>
           </span>
         </div>
       </form>
