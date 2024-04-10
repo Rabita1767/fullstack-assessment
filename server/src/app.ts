@@ -21,6 +21,7 @@ const typeDefs = `#graphql
         email: String,
         password: String,
         status: Boolean,
+        admin: Boolean,
         user: User
     }
     
@@ -51,10 +52,9 @@ const typeDefs = `#graphql
         description: String,
         price: Int,
         rent: Int,
-        post_date: String,
-        views: String,
-        status: String,
-        category_product: String
+        posted: String,
+        views: Int,
+        status: String
     }
 
     type Query{
@@ -73,6 +73,21 @@ const typeDefs = `#graphql
             phone: String!,
             password: String!
         ): AuthInstance,
+        productAdd(
+            title: String!,
+            description: String!,
+            price: Int!,
+            rent: Int!,
+            posted: String!,
+        ): Product
+        productUpdate(
+            id: ID
+            title: String,
+            description: String,
+            price: Int,
+            rent: Int,
+            posted: String,
+        ): Product
     }
 `;
 
@@ -137,6 +152,55 @@ const resolvers = {
                 },
             });
             return { ...user, email: auth.email };
+        },
+        async productAdd(
+            _: any,
+            args: {
+                title: string;
+                description: string;
+                price: string;
+                rent: string;
+                posted: string;
+            }
+        ) {
+            // const { title } = args;
+            return await prisma.product.create({
+                data: {
+                    title: args.title,
+                    description: args.description,
+                    price: Number(args.price),
+                    rent: Number(args.rent),
+                    posted: new Date(args.posted),
+                    status: true,
+                    views: 0,
+                },
+            });
+        },
+        async productUpdate(
+            _: any,
+            args: {
+                id: string;
+                title: string;
+                description: string;
+                price: string;
+                rent: string;
+                posted: string;
+                status: boolean;
+            }
+        ) {
+            return await prisma.product.update({
+                where: {
+                    id: Number(args.id),
+                },
+                data: {
+                    title: args.title || undefined,
+                    description: args.description || undefined,
+                    price: Number(args.price) || undefined,
+                    rent: Number(args.rent) || undefined,
+                    posted: args.posted || undefined,
+                    status: args.status || undefined,
+                },
+            });
         },
     },
 };
