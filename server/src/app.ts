@@ -55,6 +55,14 @@ const typeDefs = `#graphql
         posted: String,
         views: Int,
         status: String
+        categoryId: Int,
+        category: Category,
+    }
+
+    type Category{
+        id: ID,
+        name: String,
+        created: String,
     }
 
     type Query{
@@ -77,6 +85,7 @@ const typeDefs = `#graphql
             title: String!,
             description: String!,
             price: Int!,
+            categoryId: Int!,
             rent: Int!,
             posted: String!,
         ): Product
@@ -106,8 +115,12 @@ const resolvers = {
             });
             return auth;
         },
-        products() {
-            return prisma.product.findMany({});
+        async products() {
+            return prisma.product.findMany({
+                include: {
+                    category: true,
+                },
+            });
         },
     },
     Mutation: {
@@ -160,6 +173,7 @@ const resolvers = {
                 description: string;
                 price: string;
                 rent: string;
+                categoryId: string;
                 posted: string;
             }
         ) {
@@ -171,8 +185,12 @@ const resolvers = {
                     price: Number(args.price),
                     rent: Number(args.rent),
                     posted: new Date(args.posted),
+                    categoryId: Number(args.categoryId),
                     status: true,
                     views: 0,
+                },
+                include: {
+                    category: true,
                 },
             });
         },
