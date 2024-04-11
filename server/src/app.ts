@@ -78,6 +78,7 @@ const typeDefs = `#graphql
         users: [User],
         products: [Product]
         product(id: String!): Product
+        category: [Category]
     }
 
     type Mutation{
@@ -144,6 +145,10 @@ const resolvers = {
             });
             // console.log(product?.category_product);
             return product;
+        },
+        async category() {
+            const categories = await prisma.category.findMany({});
+            return categories;
         },
     },
     Mutation: {
