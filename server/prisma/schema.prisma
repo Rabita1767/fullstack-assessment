@@ -34,17 +34,15 @@ model User {
 }
 
 model Product {
-  id               Int               @id @default(autoincrement())
-  title            String            @db.VarChar(300)
-  description      String            @db.VarChar(2000)
-  price            Int               @default(0)
-  rent             Int               @default(0)
+  id               Int                @id @default(autoincrement())
+  title            String             @db.VarChar(300)
+  description      String             @db.VarChar(2000)
+  price            Int                @default(0)
+  rent             Int                @default(0)
   posted           DateTime?
-  views            Int               @default(0)
-  status           Boolean           @default(true)
-  category         Category          @relation(fields: [categoryId], references: [id])
-  Category_Product Category_Product?
-  categoryId       Int
+  views            Int                @default(0)
+  status           Boolean            @default(true)
+  category_product Category_Product[]
 
   @@map("products")
 }
@@ -54,7 +52,6 @@ model Category {
   name             String             @db.VarChar(255)
   created          DateTime?
   category_product Category_Product[]
-  Product          Product[]
 
   @@map("categories")
 }
@@ -64,7 +61,7 @@ model Category_Product {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
   product    Product  @relation(fields: productId, references: id)
-  productId  Int      @unique
+  productId  Int
 
   @@map("category_product")
 }

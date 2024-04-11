@@ -55,14 +55,21 @@ const typeDefs = `#graphql
         posted: String,
         views: Int,
         status: String
-        categoryId: Int,
-        category: Category,
+        category_product: [Category_Product],
     }
 
     type Category{
         id: ID,
         name: String,
         created: String,
+    }
+
+    type Category_Product{
+        id: ID,
+        categoryId: String,
+        category: Category,
+        product: Product,
+        productId: String
     }
 
     type Query{
@@ -86,7 +93,6 @@ const typeDefs = `#graphql
             title: String!,
             description: String!,
             price: Int!,
-            categoryId: Int!,
             rent: Int!,
             posted: String!,
         ): Product
@@ -119,19 +125,25 @@ const resolvers = {
         async products() {
             return prisma.product.findMany({
                 include: {
-                    category: true,
+                    category_product: true,
                 },
             });
         },
         async product(_: any, args: { id: string }) {
-            return prisma.product.findFirst({
+            const product = await prisma.product.findFirst({
                 where: {
                     id: Number(args.id),
                 },
                 include: {
-                    category: true,
+                    category_product: {
+                        include: {
+                            category: true,
+                        },
+                    },
                 },
             });
+            // console.log(product?.category_product);
+            return product;
         },
     },
     Mutation: {
@@ -196,12 +208,11 @@ const resolvers = {
                     price: Number(args.price),
                     rent: Number(args.rent),
                     posted: new Date(args.posted),
-                    categoryId: Number(args.categoryId),
                     status: true,
                     views: 0,
                 },
                 include: {
-                    category: true,
+                    category_product: true,
                 },
             });
         },
