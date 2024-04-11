@@ -70,6 +70,7 @@ const typeDefs = `#graphql
         login(email: String!, password: String!): Auth,
         users: [User],
         products: [Product]
+        product(id: String!): Product
     }
 
     type Mutation{
@@ -117,6 +118,16 @@ const resolvers = {
         },
         async products() {
             return prisma.product.findMany({
+                include: {
+                    category: true,
+                },
+            });
+        },
+        async product(_: any, args: { id: string }) {
+            return prisma.product.findFirst({
+                where: {
+                    id: Number(args.id),
+                },
                 include: {
                     category: true,
                 },
