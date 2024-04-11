@@ -7,16 +7,29 @@
     grid-template-columns: 1fr 1fr;
     width: 40%;
     margin: 1rem auto;
-    padding: 1rem 0.5rem;
+    padding: 1rem 1.5rem;
     border: 2px solid colors.$border;
     border-radius: 0.25rem;
     row-gap: 0.65rem;
 
-    &_title,
+    // &_title,
     &_category,
     &_price,
     &_description {
         grid-column: span 2;
+    }
+
+    &_deletebtn {
+        text-align: end;
+        z-index: 100;
+        width: min-content;
+        display: flex;
+        align-items: center;
+        justify-self: flex-end;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+
     }
 
     &_title {

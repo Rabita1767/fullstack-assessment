@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./index.scss";
-import { Button } from "@mantine/core";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface IProductCard {
   id: number;
@@ -29,6 +30,14 @@ const ProductCard: React.FC<IProductCard> = ({
   return (
     <Link className="productcard" to={`/products/detail/${id}`}>
       <span className="productcard_title">{title}</span>
+      <button
+        className="productcard_deletebtn"
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+      >
+        <FontAwesomeIcon icon={faTrashAlt} />
+      </button>
       <span className="productcard_category">Category: {category}</span>
       <span className="productcard_price">Price: {price}</span>
       <span className="productcard_description">
