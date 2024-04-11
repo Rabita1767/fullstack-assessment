@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import ProductList from "./components/pages/ProductList";
+import EditProduct from "./components/pages/EditProduct";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/products" element={<ProductList />} />
+        <Route path="/products/detail/:id" element={<EditProduct />} />
       </Routes>
     </BrowserRouter>
   );
