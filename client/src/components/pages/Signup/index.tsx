@@ -1,32 +1,14 @@
-import {
-  gql,
-  useMutation,
-} from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import "./index.scss";
-import {
-  PasswordInput,
-  Input,
-  Button,
-} from "@mantine/core";
+import { PasswordInput, Input, Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import {
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
-import { title } from "process";
+import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ISignup } from "../../../_types_/client";
+import { SIGNUP_QUERY } from "../../../_types_/gql";
 
 const Signup: React.FC = () => {
-  const [signupData, setSignupData] = useState<{
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-    confirm_password: string;
-    address: string;
-    phone: string;
-  }>({
+  const [signupData, setSignupData] = useState<ISignup>({
     first_name: "",
     last_name: "",
     email: "",
@@ -36,33 +18,7 @@ const Signup: React.FC = () => {
     phone: "",
   });
 
-  const SIGNUP_QUERY = gql`
-    mutation Mutation(
-      $first_name: String!
-      $last_name: String!
-      $email: String!
-      $password: String!
-      $address: String!
-      $phone: String!
-    ) {
-      signup(
-        first_name: $first_name
-        last_name: $last_name
-        email: $email
-        password: $password
-        address: $address
-        phone: $phone
-      ) {
-        email
-        first_name
-        last_name
-        address
-        phone
-      }
-    }
-  `;
-  const [triggerSignup, { data, error }] =
-    useMutation(SIGNUP_QUERY);
+  const [triggerSignup, { data, error }] = useMutation(SIGNUP_QUERY);
 
   useEffect(() => {
     if (error) {
@@ -72,7 +28,7 @@ const Signup: React.FC = () => {
         color: "red",
       });
     }
-    if(data){
+    if (data) {
       notifications.show({
         title: "Success",
         message: "Successfully signed up",
@@ -94,14 +50,10 @@ const Signup: React.FC = () => {
     ) {
       notifications.show({
         title: "Multiple fields",
-        message:
-          "One or more of the fields are empty",
+        message: "One or more of the fields are empty",
         color: "red",
       });
-    } else if (
-      signupData.password !==
-      signupData.confirm_password
-    ) {
+    } else if (signupData.password !== signupData.confirm_password) {
       notifications.show({
         title: "Password",
         message: "Passwords do not match",
@@ -123,13 +75,8 @@ const Signup: React.FC = () => {
 
   return (
     <div className="signup">
-      <span className="signup_header">
-        SIGN UP
-      </span>
-      <form
-        className="signup_card"
-        onSubmit={onSignup}
-      >
+      <span className="signup_header">SIGN UP</span>
+      <form className="signup_card" onSubmit={onSignup}>
         <Input
           onChange={(e) =>
             setSignupData((prevState) => ({
@@ -217,10 +164,7 @@ const Signup: React.FC = () => {
           </Button>
           <span className="signup_card_action_forgot">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="signup_card_action_forgot_link"
-            >
+            <Link to="/login" className="signup_card_action_forgot_link">
               Sign in
             </Link>
           </span>

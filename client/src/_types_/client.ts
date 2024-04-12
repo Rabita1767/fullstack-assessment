@@ -12,6 +12,8 @@ export interface IProductInput {
   title: string;
   description: string;
   price: number;
-  rent: number;
+  rent_amount: number;
+  rent_rate: string; // "hours" | "days" | "weeks" | "months";
   category: string[];
+  posted?: Date;
 }

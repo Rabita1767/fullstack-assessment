@@ -1,8 +1,10 @@
 import "./index.scss";
 import { PasswordInput, Input, Button } from "@mantine/core";
-import { useLazyQuery, gql } from "@apollo/client";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useLazyQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
+import { LOGIN_QUERY } from "../../../_types_/gql";
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState<{
@@ -12,24 +14,28 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
-  const LOGIN_QUERY = gql`
-    query Query($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
-        id
-        email
-        status
-        user {
-          id
-          first_name
-          last_name
-          address
-          phone
-        }
-      }
+  const [triggerLogin, { data: loginData }] = useLazyQuery(LOGIN_QUERY);
+
+  useEffect(() => {
+    if (loginData?.login === null) {
+      notifications.show({
+        title: "Error",
+        message: "Invalid user!",
+        color: "red",
+      });
     }
-  `;
-  const [triggerLogin] = useLazyQuery(LOGIN_QUERY);
+    if (loginData?.login?.id) {
+      notifications.show({
+        title: "Success",
+        message: "Successfully logged in!",
+        color: "green",
+      });
+      navigate("/products");
+    }
+  }, [loginData, navigate]);
+
   return (
     <div className="login">
       <span className="login_header">SIGN IN</span>

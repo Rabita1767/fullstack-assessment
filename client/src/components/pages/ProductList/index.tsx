@@ -1,30 +1,11 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Layout from "../../layouts/Layout";
 import ProductCard from "../../elements/ProductCard";
+import { IProductList } from "../../../_types_/db";
+import { PRODUCT_LIST_QUERY } from "../../../_types_/gql";
 
 const ProductList = () => {
-  const PRODUCT_LIST_QUERY = gql`
-    query Query {
-      products {
-        id
-        title
-        description
-        price
-        rent
-        posted
-        views
-        status
-        category_product {
-          category {
-            id
-            name
-          }
-        }
-      }
-    }
-  `;
-  const { data: productList } = useQuery(PRODUCT_LIST_QUERY);
-  //   console.log(productList);
+  const { data: productList } = useQuery<IProductList>(PRODUCT_LIST_QUERY);
   return (
     <Layout>
       {productList?.products.map(
