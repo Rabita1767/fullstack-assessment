@@ -51,7 +51,8 @@ const typeDefs = `#graphql
         title: String,
         description: String,
         price: Int,
-        rent: Int,
+        rent_amount:Int,
+        rent_rate: String,
         posted: String,
         views: Int,
         status: String
@@ -94,7 +95,9 @@ const typeDefs = `#graphql
             title: String!,
             description: String!,
             price: Int!,
-            rent: Int!,
+            rent_amount: Int!,
+            rent_rate: String!,
+            category: [String],
             posted: String!,
         ): Product
         productUpdate(
@@ -103,7 +106,8 @@ const typeDefs = `#graphql
             description: String,
             category: [String],
             price: Int,
-            rent: Int,
+            rent_amount: Int,
+            rent_rate: String
         ): Product
     }
 `;
@@ -206,12 +210,12 @@ const resolvers = {
                 price: string;
                 rent_amount: string;
                 rent_rate: string;
-                categoryId: string;
+                category: string[];
                 posted: string;
             }
         ) {
             // const { title } = args;
-            return await prisma.product.create({
+            const product = await prisma.product.create({
                 data: {
                     title: args.title,
                     description: args.description,
@@ -222,10 +226,24 @@ const resolvers = {
                     status: true,
                     views: 0,
                 },
+            });
+            const category_product = await prisma.category_Product.createMany({
+                data: args.category.map((element) => ({
+                    productId: product.id,
+                    categoryId: Number(element),
+                })),
+            });
+            const new_product = await prisma.product.findFirst({
+                where: { id: product.id },
                 include: {
-                    category_product: true,
+                    category_product: {
+                        include: {
+                            category: true,
+                        },
+                    },
                 },
             });
+            return new_product;
         },
         async productUpdate(
             _: any,
