@@ -134,6 +134,7 @@ export const LOGIN_QUERY = gql`
       id
       email
       status
+      admin
       user {
         id
         first_name

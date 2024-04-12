@@ -29,7 +29,6 @@ const CreateProduct = () => {
   );
 
   useEffect(() => {
-    console.log(createdProduct);
     if (createdProduct?.productAdd) {
       navigate("/products");
     } else if (error) {

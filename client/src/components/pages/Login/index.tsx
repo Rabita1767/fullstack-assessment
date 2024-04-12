@@ -32,7 +32,20 @@ const Login: React.FC = () => {
         message: "Successfully logged in!",
         color: "green",
       });
-      navigate("/products");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: loginData.login.id,
+          email: loginData.login.email,
+          admin: loginData.login.admin,
+          user: {
+            id: loginData.login.user.id,
+            first_name: loginData.login.user.first_name,
+            last_name: loginData.login.user.last_name,
+          },
+        })
+      );
+      navigate("/private/products");
     }
   }, [loginData, navigate]);
 
