@@ -101,9 +101,9 @@ const typeDefs = `#graphql
             id: ID
             title: String,
             description: String,
+            category: [String],
             price: Int,
             rent: Int,
-            posted: String,
         ): Product
     }
 `;
@@ -229,11 +229,10 @@ const resolvers = {
                 description: string;
                 price: string;
                 rent: string;
-                posted: string;
-                status: boolean;
+                category: string[];
             }
         ) {
-            return await prisma.product.update({
+            const product = await prisma.product.update({
                 where: {
                     id: Number(args.id),
                 },
@@ -242,10 +241,27 @@ const resolvers = {
                     description: args.description || undefined,
                     price: Number(args.price) || undefined,
                     rent: Number(args.rent) || undefined,
-                    posted: args.posted || undefined,
-                    status: args.status || undefined,
                 },
             });
+
+            await prisma.category_Product.deleteMany({
+                where: {
+                    productId: Number(args.id),
+                },
+            });
+
+            const newDate: { productId: number; categoryId: number }[] = args.category.map(
+                (element) => ({
+                    productId: Number(args.id),
+                    categoryId: Number(element),
+                })
+            );
+
+            await prisma.category_Product.createMany({
+                data: newDate,
+            });
+
+            return product;
         },
     },
 };
