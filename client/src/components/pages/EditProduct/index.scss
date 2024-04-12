@@ -1,0 +1,21 @@
+.editproduct {
+    // width: "60%", margin: "0 auto"
+    width: 60%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    row-gap: 1rem;
+
+    &_title,
+    &_category,
+    &_description {
+        grid-column: span 2;
+    }
+
+    &_submit {
+        grid-column: span 2;
+        width: fit-content;
+        justify-self: flex-end;
+    }
+}
