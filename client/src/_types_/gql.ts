@@ -7,7 +7,8 @@ export const PRODUCT_LIST_QUERY = gql`
       title
       description
       price
-      rent
+      rent_amount
+      rent_rate
       posted
       views
       status
@@ -28,7 +29,8 @@ export const SINGLE_PRODUCT_QUERY = gql`
       title
       description
       price
-      rent
+      rent_amount
+      rent_rate
       posted
       views
       status
@@ -43,6 +45,43 @@ export const SINGLE_PRODUCT_QUERY = gql`
   }
 `;
 
+export const CREATE_PRODUCT_MUTATION = gql`
+  mutation Mutation(
+    $title: String!
+    $description: String!
+    $price: Int!
+    $rent_amount: Int!
+    $rent_rate: String!
+    $posted: String!
+    $category: [String]!
+  ) {
+    productAdd(
+      title: $title
+      description: $description
+      price: $price
+      rent_amount: $rent_amount
+      rent_rate: $rent_rate
+      posted: $posted
+      category: $category
+    ) {
+      id
+      title
+      price
+      price
+      rent_amount
+      rent_rate
+      posted
+      views
+      category_product {
+        id
+        category {
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const UPDATE_PRODUCT_QUERY = gql`
   mutation Mutation(
     $id: ID
@@ -50,7 +89,8 @@ export const UPDATE_PRODUCT_QUERY = gql`
     $description: String
     $price: Int
     $category: [String]
-    $rent: Int
+    $rent_amount: Int
+    $rent_rate: String
   ) {
     productUpdate(
       id: $id
@@ -58,13 +98,15 @@ export const UPDATE_PRODUCT_QUERY = gql`
       description: $description
       price: $price
       category: $category
-      rent: $rent
+      rent_amount: $rent_amount
+      rent_rate: $rent_rate
     ) {
       id
       title
       price
       price
-      rent
+      rent_amount
+      rent_rate
       posted
       views
       category_product {
