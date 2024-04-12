@@ -1,0 +1,20 @@
+.createproduct {
+    width: 60%;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+
+    // display: flex;
+
+    &_form {
+        grid-column: span 2;
+        min-height: 4rem;
+    }
+
+    &_next {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
