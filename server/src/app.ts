@@ -126,7 +126,11 @@ const resolvers = {
         async products() {
             return prisma.product.findMany({
                 include: {
-                    category_product: true,
+                    category_product: {
+                        include: {
+                            category: true,
+                        },
+                    },
                 },
             });
         },
@@ -232,6 +236,23 @@ const resolvers = {
                 category: string[];
             }
         ) {
+            await prisma.category_Product.deleteMany({
+                where: {
+                    productId: Number(args.id),
+                },
+            });
+
+            const newCategories: { productId: number; categoryId: number }[] = args.category.map(
+                (element) => ({
+                    productId: Number(args.id),
+                    categoryId: Number(element),
+                })
+            );
+
+            await prisma.category_Product.createMany({
+                data: newCategories,
+            });
+
             const product = await prisma.product.update({
                 where: {
                     id: Number(args.id),
@@ -242,24 +263,16 @@ const resolvers = {
                     price: Number(args.price) || undefined,
                     rent: Number(args.rent) || undefined,
                 },
-            });
-
-            await prisma.category_Product.deleteMany({
-                where: {
-                    productId: Number(args.id),
+                include: {
+                    category_product: {
+                        include: {
+                            category: true,
+                        },
+                    },
                 },
             });
 
-            const newDate: { productId: number; categoryId: number }[] = args.category.map(
-                (element) => ({
-                    productId: Number(args.id),
-                    categoryId: Number(element),
-                })
-            );
-
-            await prisma.category_Product.createMany({
-                data: newDate,
-            });
+            // console.log(product);
 
             return product;
         },
