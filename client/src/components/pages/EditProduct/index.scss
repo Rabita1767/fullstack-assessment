@@ -13,6 +13,14 @@
         grid-column: span 2;
     }
 
+    &_rent {
+        &_container {
+            display: flex;
+        }
+
+        // grid-template-columns: 1fr 1fr;
+    }
+
     &_submit {
         grid-column: span 2;
         width: fit-content;

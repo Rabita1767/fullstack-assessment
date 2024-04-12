@@ -6,11 +6,31 @@
     grid-template-columns: 1fr 1fr;
     row-gap: 1rem;
 
+
+
     // display: flex;
 
     &_form {
         grid-column: span 2;
         min-height: 4rem;
+
+        &_3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            &_price {
+                grid-column: span 2;
+            }
+
+            &_rent {
+                &_label {
+                    grid-column: span 2;
+                }
+
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     }
 
     &_next {
