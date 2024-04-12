@@ -23,12 +23,13 @@ model Auth {
 }
 
 model User {
-  id         Int    @id @default(autoincrement())
-  first_name String @db.VarChar(255)
-  last_name  String @db.VarChar(255)
-  address    String @db.VarChar(500)
-  phone      String @db.VarChar(75)
-  authId     Auth?
+  id            Int             @id @default(autoincrement())
+  first_name    String          @db.VarChar(255)
+  last_name     String          @db.VarChar(255)
+  address       String          @db.VarChar(500)
+  phone         String          @db.VarChar(75)
+  authId        Auth?
+  Rent_Instance Rent_Instance[]
 
   @@map("users")
 }
@@ -38,11 +39,13 @@ model Product {
   title            String             @db.VarChar(300)
   description      String             @db.VarChar(2000)
   price            Int                @default(0)
-  rent             Int                @default(0)
+  rent_amount      Int?               @default(0)
+  rent_rate        String?
   posted           DateTime?
   views            Int                @default(0)
   status           Boolean            @default(true)
   category_product Category_Product[]
+  rent_instance    Rent_Instance[]
 
   @@map("products")
 }
@@ -64,4 +67,14 @@ model Category_Product {
   productId  Int
 
   @@map("category_product")
+}
+
+model Rent_Instance {
+  id        Int      @id @default(autoincrement())
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  from      DateTime
+  to        DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }

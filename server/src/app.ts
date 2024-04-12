@@ -204,7 +204,8 @@ const resolvers = {
                 title: string;
                 description: string;
                 price: string;
-                rent: string;
+                rent_amount: string;
+                rent_rate: string;
                 categoryId: string;
                 posted: string;
             }
@@ -215,7 +216,8 @@ const resolvers = {
                     title: args.title,
                     description: args.description,
                     price: Number(args.price),
-                    rent: Number(args.rent),
+                    rent_amount: Number(args.rent_amount) || undefined,
+                    rent_rate: args.rent_rate || undefined,
                     posted: new Date(args.posted),
                     status: true,
                     views: 0,
@@ -232,7 +234,8 @@ const resolvers = {
                 title: string;
                 description: string;
                 price: string;
-                rent: string;
+                rent_amount: string;
+                rent_rate: string;
                 category: string[];
             }
         ) {
@@ -261,7 +264,8 @@ const resolvers = {
                     title: args.title || undefined,
                     description: args.description || undefined,
                     price: Number(args.price) || undefined,
-                    rent: Number(args.rent) || undefined,
+                    rent_amount: Number(args.rent_amount) || undefined,
+                    rent_rate: args.rent_rate || undefined,
                 },
                 include: {
                     category_product: {
