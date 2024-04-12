@@ -14,9 +14,11 @@ const ProductList = () => {
         posted
         views
         status
-        category {
-          id
-          name
+        category_product {
+          category {
+            id
+            name
+          }
         }
       }
     }
@@ -26,7 +28,15 @@ const ProductList = () => {
   return (
     <Layout>
       {productList?.products.map(
-        ({ id, title, description, price, posted, views, category }) => {
+        ({
+          id,
+          title,
+          description,
+          price,
+          posted,
+          views,
+          category_product,
+        }) => {
           return (
             <ProductCard
               key={id}
@@ -36,7 +46,9 @@ const ProductList = () => {
               price={price}
               posted={posted}
               views={views}
-              category={category.name}
+              category={category_product
+                .map((category_product) => category_product.category.name)
+                .join(", ")}
             />
           );
         }
