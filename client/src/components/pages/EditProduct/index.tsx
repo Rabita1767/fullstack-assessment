@@ -1,115 +1,51 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Layout from "../../layouts/Layout";
 import {
   Button,
   Input,
   InputWrapper,
   MultiSelect,
+  Select,
   Textarea,
 } from "@mantine/core";
 import { useParams } from "react-router-dom";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import "./index.scss";
 import { notifications } from "@mantine/notifications";
+import { IProductInput } from "../../../_types_/client";
+import {
+  CATEGORY_LIST_QUERY,
+  SINGLE_PRODUCT_QUERY,
+  UPDATE_PRODUCT_QUERY,
+} from "../../../_types_/gql";
 
 const EditProduct = () => {
   const { id } = useParams();
-  const [productData, setProductData] = useState<{
-    title: string;
-    description: string;
-    price: string;
-    rent: string;
-    category: string[];
-  }>({
+  const [formData, setFormData] = useState<IProductInput>({
     title: "",
     description: "",
-    price: "",
-    rent: "",
+    price: 0,
+    rent_amount: 0,
+    rent_rate: "hours",
     category: [],
   });
-  const SINGLE_PRODUCT_QUERY = gql`
-    query Query($id: String!) {
-      product(id: $id) {
-        id
-        title
-        description
-        price
-        rent
-        posted
-        views
-        status
-        category_product {
-          id
-          category {
-            id
-            name
-          }
-        }
-      }
-    }
-  `;
-
-  const CATEGORY_LIST_QUERY = gql`
-    query Query {
-      category {
-        id
-        name
-      }
-    }
-  `;
-
-  const UPDATE_PRODUCT_QUERY = gql`
-    mutation Mutation(
-      $id: ID
-      $title: String
-      $description: String
-      $price: Int
-      $category: [String]
-      $rent: Int
-    ) {
-      productUpdate(
-        id: $id
-        title: $title
-        description: $description
-        price: $price
-        category: $category
-        rent: $rent
-      ) {
-        id
-        title
-        price
-        price
-        rent
-        posted
-        views
-        category_product {
-          id
-          category {
-            name
-          }
-        }
-      }
-    }
-  `;
 
   const { data: productDetails } = useQuery(SINGLE_PRODUCT_QUERY, {
     variables: { id: id },
   });
   const { data: categoryList } = useQuery(CATEGORY_LIST_QUERY);
-  const [triggerUpdateProduct, { data: updatedProduct }] =
-    useMutation(UPDATE_PRODUCT_QUERY);
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [triggerUpdateProduct] = useMutation(UPDATE_PRODUCT_QUERY);
 
   useEffect(() => {
     if (productDetails) {
-      setProductData({
-        title: productDetails?.product.title as string,
-        description: productDetails?.product.description as string,
-        price: productDetails?.product.price as string,
-        rent: productDetails?.product.rent as string,
+      setFormData({
+        title: productDetails?.product.title,
+        description: productDetails?.product.description,
+        price: productDetails?.product.price,
+        rent_amount: productDetails?.product.rent_amount ?? 0,
+        rent_rate: productDetails?.product.rent_rate ?? "hours",
         category: productDetails?.product.category_product.map(
-          (element) => element.category.id
+          (element: { category: { id: string } }) => element.category.id
         ),
       });
       // setSelectedCategories(
@@ -122,20 +58,24 @@ const EditProduct = () => {
     e.preventDefault();
     const requestBody: { [key: string]: string | number | string[] } = {};
 
-    if (productData.title !== productDetails.product.title) {
-      requestBody["title"] = productData.title;
+    if (formData.title !== productDetails.product.title) {
+      requestBody["title"] = formData.title;
     }
 
-    if (productData.description !== productDetails.product.description) {
-      requestBody["description"] = productData.description;
+    if (formData.description !== productDetails.product.description) {
+      requestBody["description"] = formData.description;
     }
 
-    if (productData.price !== productDetails.product.price) {
-      requestBody["price"] = Number(productData.price);
+    if (formData.price !== productDetails.product.price) {
+      requestBody["price"] = Number(formData.price);
     }
 
-    if (productData.rent !== productDetails.product.rent) {
-      requestBody.rent = Number(productData.rent);
+    if (formData.rent_amount !== productDetails.product.rent_amount) {
+      requestBody.rent_amount = Number(formData.rent_amount);
+    }
+
+    if (formData.rent_rate !== productDetails.product.rent_rate) {
+      requestBody.rent_rate = Number(formData.rent_rate);
     }
 
     if (Object.keys(requestBody).length === 0) {
@@ -146,7 +86,7 @@ const EditProduct = () => {
       });
     }
 
-    requestBody["category"] = productData.category;
+    requestBody["category"] = formData.category;
     if (id) {
       requestBody["id"] = id;
     }
@@ -161,9 +101,9 @@ const EditProduct = () => {
       <form className="editproduct" onSubmit={onSubmit}>
         <InputWrapper label="Title" className="editproduct_title">
           <Input
-            value={productData.title}
+            value={formData.title}
             onChange={(e) =>
-              setProductData((prevState) => ({
+              setFormData((prevState) => ({
                 ...prevState,
                 title: e.target.value,
               }))
@@ -172,15 +112,17 @@ const EditProduct = () => {
         </InputWrapper>
         <InputWrapper label="Category" className="editproduct_category">
           <MultiSelect
-            value={productData.category}
+            value={formData.category}
             onChange={(e) => {
               // console.log(e);
-              setProductData((prevState) => ({ ...prevState, category: e }));
+              setFormData((prevState) => ({ ...prevState, category: e }));
             }}
-            data={categoryList?.category.map((element) => ({
-              label: element.name,
-              value: element.id,
-            }))}
+            data={categoryList?.category.map(
+              (element: { id: string; name: string }) => ({
+                label: element.name,
+                value: element.id,
+              })
+            )}
           />
         </InputWrapper>
         <InputWrapper label="Description" className="editproduct_description">
@@ -188,9 +130,9 @@ const EditProduct = () => {
             // minRows={50}
             autosize
             resize="vertical"
-            value={productData.description}
+            value={formData.description}
             onChange={(e) =>
-              setProductData((prevState) => ({
+              setFormData((prevState) => ({
                 ...prevState,
                 description: e.target.value,
               }))
@@ -199,25 +141,39 @@ const EditProduct = () => {
         </InputWrapper>
         <InputWrapper label="Price" className="editproduct_price">
           <Input
-            value={productData.price}
+            type="number"
+            value={formData.price}
             onChange={(e) =>
-              setProductData((prevState) => ({
+              setFormData((prevState) => ({
                 ...prevState,
-                price: e.target.value,
+                price: Number(e.target.value),
               }))
             }
           />
         </InputWrapper>
         <InputWrapper label="Rent" className="editproduct_rent">
-          <Input
-            value={productData.rent}
-            onChange={(e) =>
-              setProductData((prevState) => ({
-                ...prevState,
-                rent: e.target.value,
-              }))
-            }
-          />
+          <div className="editproduct_rent_container">
+            <Input
+              type="number"
+              value={formData.rent_amount}
+              onChange={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  rent_amount: Number(e.target.value),
+                }))
+              }
+            />
+            <Select
+              // defaultValue={"hours"}
+              value={formData.rent_rate}
+              data={[
+                { label: "hour", value: "hour" },
+                { label: "day", value: "day" },
+                { label: "week", value: "week" },
+                { label: "month", value: "month" },
+              ]}
+            />
+          </div>
         </InputWrapper>
         <div className="editproduct_submit">
           <Button type="submit">Edit Product</Button>
