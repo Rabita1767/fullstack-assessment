@@ -263,12 +263,14 @@ const resolvers = {
                 },
             });
 
-            const newCategories: { productId: number; categoryId: number }[] = args.category.map(
-                (element) => ({
+            let newCategories: { productId: number; categoryId: number }[] = [];
+
+            if (args.category && args.category.length > 0) {
+                newCategories = args.category.map((element) => ({
                     productId: Number(args.id),
                     categoryId: Number(element),
-                })
-            );
+                }));
+            }
 
             await prisma.category_Product.createMany({
                 data: newCategories,
