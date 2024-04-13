@@ -18,3 +18,11 @@ Teebay App
 3. ##### Future Scope (Possible implementations with more time)
     1. The Authentication system is not implemented properly and can be enhanced upon using something similar to Redux Toolkit.
     2. The overall database schema can be made further scalable
+4. ##### Project Setup
+    In order to run the project, the best solution would be to set it up in Docker compose, however this was not achievable due to time constraints.
+    1. The machine should have Node JS and NPM installed.
+    2. The machine should also have PostgreSQL installed.
+    3. The user should go to the client directory and run the command `npm i`
+    4. The user should go to the server directory and run the command `npm i`
+    5. The user should setup their necessary env variables in the client and server directories, mainly the PostgreSQL connection string being a huge concern.
+    6. Then run the commands `npm run dev` in both the directories (client and server), and the project should be running on both the client and the server
