@@ -30,6 +30,11 @@ const CreateProduct = () => {
 
   useEffect(() => {
     if (createdProduct?.productAdd) {
+      notifications.show({
+        title: "Success",
+        message: "Successfully added product",
+        color: "green",
+      });
       navigate("/private/products");
     } else if (error) {
       notifications.show({
@@ -39,7 +44,7 @@ const CreateProduct = () => {
       });
     }
   }, [createdProduct, navigate, error]);
-
+  console.log(categoryList);
   return (
     <Layout>
       <div className="createproduct">
@@ -142,10 +147,17 @@ const CreateProduct = () => {
             </div>
           ) : null}
           {step === 4 ? (
-            <div>
+            <div className="createproduct_form_4">
               <span>Summary</span>
               <span>Title: {formData.title}</span>
-              <span>Categories: {formData.category}</span>
+              <span>Categories: {formData.category.join(", ")}</span>
+              <span>Description: {formData.description}</span>
+              <span>
+                <span>Price: ${formData.price}</span>
+                <span>
+                  Rent: ${formData.rent_amount} per {formData.rent_rate}
+                </span>
+              </span>
             </div>
           ) : null}
         </div>

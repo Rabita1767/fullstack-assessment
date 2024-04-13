@@ -7,11 +7,12 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div>
-        <Link to={"/private/products/create"}>
-          <Button>CREATE PRODUCT</Button>
-        </Link>
-      </div>
+      <Link to={"/private/products"}>
+        <Button>ALL PRODUCTS</Button>
+      </Link>
+      <Link to={"/private/products/create"}>
+        <Button>CREATE PRODUCT</Button>
+      </Link>
       <Button
         onClick={() => {
           localStorage.removeItem("user");

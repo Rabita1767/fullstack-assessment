@@ -45,7 +45,7 @@ const Login: React.FC = () => {
           },
         })
       );
-      navigate("/private/products");
+      window.location.pathname = "/private/products";
     }
   }, [loginData, navigate]);
 

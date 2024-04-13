@@ -8,32 +8,35 @@ const ProductList = () => {
   const { data: productList } = useQuery<IProductList>(PRODUCT_LIST_QUERY);
   return (
     <Layout>
-      {productList?.products.map(
-        ({
-          id,
-          title,
-          description,
-          price,
-          posted,
-          views,
-          category_product,
-        }) => {
-          return (
-            <ProductCard
-              key={id}
-              id={id}
-              title={title}
-              description={description}
-              price={price}
-              posted={posted}
-              views={views}
-              category={category_product
-                .map((category_product) => category_product.category.name)
-                .join(", ")}
-            />
-          );
-        }
-      )}
+      {productList?.products
+        .slice(0)
+        .reverse()
+        .map(
+          ({
+            id,
+            title,
+            description,
+            price,
+            posted,
+            views,
+            category_product,
+          }) => {
+            return (
+              <ProductCard
+                key={id}
+                id={id}
+                title={title}
+                description={description}
+                price={price}
+                posted={posted}
+                views={views}
+                category={category_product
+                  .map((category_product) => category_product.category.name)
+                  .join(", ")}
+              />
+            );
+          }
+        )}
     </Layout>
   );
 };

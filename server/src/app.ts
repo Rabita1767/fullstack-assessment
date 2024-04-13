@@ -134,6 +134,7 @@ const resolvers = {
                         include: {
                             category: true,
                         },
+                        take: 100,
                     },
                 },
             });

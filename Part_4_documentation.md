@@ -5,6 +5,7 @@ Teebay App
     1. To tackle the requirement of GraphQL I quickly read through the very basics of grpahql and it took some time to go through how graphql can be integrated with express or node. I ended up using the package `@apollo/server` with express as it seemed to be the simplest to use.
     2. To handle the renting, I have maintained a rent_amount and rent_rate for each product which will be fixed for each particular product unless they are changed. This was initially confusing as I assumed a junction/linking table would be required. It ended up causing multiple instances of intricate changes in the schema multiple times and slowed down the development.
     3. Categorizing the products ended up causing confusion as well, as it involves a junction table and the implementation got messy when testing with dummy data from the database, as there was always going to be contraints when working with them.
+    4. I did not end up doing the rent and purchase modules due to time constraints and bugs already being persistent.
 2. ##### Project Development
     The project has been developed with
     1. React
@@ -14,3 +15,6 @@ Teebay App
     5. GraphQL (Apollo)
     6. Prisma ORM
     7. PostgreSQL
+3. ##### Future Scope (Possible implementations with more time)
+    1. The Authentication system is not implemented properly and can be enhanced upon using something similar to Redux Toolkit.
+    2. The overall database schema can be made further scalable

@@ -31,6 +31,12 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+
+        &_4 {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
     }
 
     &_next {
