@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "9b991f02-48d4-4236-bd59-793e106e2ea5",
+		"name": "Sazim-Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14481775"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "All Categories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Query{\r\n  category {\r\n    id,\r\n    name\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "All Products",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Query{\r\n  products {\r\n    id\r\n    title\r\n    description\r\n    price\r\n    rent\r\n    posted\r\n    views\r\n    status\r\n    category_product{\r\n        category{\r\n            id\r\n            name\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Query($id: String!){\r\n  product(id: $id) {\r\n    id\r\n    title\r\n    description\r\n    price\r\n    rent\r\n    posted\r\n    views\r\n    status\r\n    category_product{\r\n        id\r\n        category{\r\n            id\r\n            name\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\": \"1\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation(\r\n    $title: String!,\r\n    $description: String!,\r\n    $price: Int!,\r\n    $rent_amount: Int!,\r\n    $rent_rate: String!,\r\n    $posted: String!,\r\n    $category: Int!\r\n){\r\n  productAdd(\r\n    title: $title,\r\n    description: $description,\r\n    price: $price,\r\n    rent_amount: $rent_amount,\r\n    rent_rate: $rent_rate,\r\n    posted: $posted,\r\n    category: $category\r\n  ) {\r\n    id\r\n    title\r\n    price\r\n    price\r\n    rent\r\n    posted\r\n    views\r\n    categoryId\r\n    category{\r\n        name\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"title\": \"Samsung Galaxy S3\",\r\n    \"description\": \"Lorem ipsum is this a description demo text\",\r\n    \"price\": 5000,\r\n    \"posted\": \"2020-12-10\",\r\n    \"rent_amount\": 300,\r\n    \"rent_rate\": \"hour\",\r\n    \"category\": [\"1\"]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation(\r\n    $id: ID\r\n    $title: String,\r\n    $description: String,\r\n    $price: Int,\r\n    $category: [String],\r\n    $rent: Int,\r\n){\r\n  productUpdate(\r\n    id: $id,\r\n    title: $title,\r\n    description: $description,\r\n    price: $price,\r\n    category: $category,\r\n    rent: $rent,\r\n  ) {\r\n    id\r\n    title\r\n    description\r\n    price\r\n    price\r\n    rent\r\n    posted\r\n    views\r\n    category_product{\r\n        id\r\n        category{\r\n            name\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\": \"1\",\r\n    \"title\": \"Samsung Galaxy S3\",\r\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed elementum tellus. Etiam placerat ullamcorper turpis a ultricies. Cras gravida ipsum sapien, ac suscipit nibh scelerisque nec. Donec maximus finibus velit nec tincidunt. Integer nulla urna, luctus vitae diam sit amet, consectetur luctus erat. Donec nec odio lobortis, eleifend eros sollicitudin, tempor neque. Phasellus bibendum, nisi vitae ultricies imperdiet, quam libero imperdiet augue, ut rhoncus arcu lorem nec quam. Aliquam aliquet enim eu vulputate congue. Donec sodales nunc at lacinia maximus. \\n\\nCras quis metus ante. Vivamus vestibulum nibh vitae tristique aliquam. Curabitur suscipit efficitur dui, eget pellentesque turpis gravida non. Vivamus a dignissim massa. Nulla lobortis eros vitae risus tristique, sed varius massa pretium. Vivamus at lorem auctor, elementum sem sit amet, finibus ex. Aenean id metus in nulla ultricies tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc arcu nisi, semper luctus vehicula sit amet, luctus ut elit.\\n\\nFusce quis nisl sit amet lectus dignissim facilisis. \",\r\n    \"price\": 5000,\r\n    \"rent\": 2000,\r\n    \"category\": [\"1\", \"2\"]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rent One Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation(\r\n    $id: ID\r\n    $title: String,\r\n    $description: String,\r\n    $price: Int,\r\n    $category: [String],\r\n    $rent: Int,\r\n){\r\n  productUpdate(\r\n    id: $id,\r\n    title: $title,\r\n    description: $description,\r\n    price: $price,\r\n    category: $category,\r\n    rent: $rent,\r\n  ) {\r\n    id\r\n    title\r\n    price\r\n    price\r\n    rent\r\n    posted\r\n    views\r\n    category_product{\r\n        id\r\n        category{\r\n            name\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\": \"9\",\r\n    \"title\": \"Samsung Galaxy S3\",\r\n    \"description\": \"Lorem ipsum is this a description demo text\",\r\n    \"price\": 5000,\r\n    \"rent\": 2000,\r\n    \"category\": [\"1\", \"2\", \"4\"]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": []
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Query($email: String!, $password: String!){\r\n  login(email: $email, password: $password) {\r\n    id\r\n    email\r\n    status  \r\n    admin\r\n    user{\r\n        id\r\n        first_name\r\n        last_name\r\n        address\r\n        phone\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"email\": \"snigdho.howlader@gmail.com\",\r\n    \"password\": \"Abc@1234\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation Mutation($first_name: String!, $last_name: String!, $email: String!, $password: String!, $address: String!, $phone: String!){\r\n  signup(first_name: $first_name, last_name: $last_name, email: $email, password: $password, address: $address, phone: $phone) {\r\n    email\r\n    first_name\r\n    last_name\r\n    address\r\n    phone\r\n  }\r\n}",
+								"variables": "{\r\n    \"first_name\": \"Snigdho Dip\",\r\n    \"last_name\": \"Howlader\",\r\n    \"email\": \"snigdho.howlader@gmail.com\",\r\n    \"password\": \"Abc@1234\",\r\n    \"address\": \"Dhaka, Bangladesh\",\r\n    \"phone\": \"01775641902\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/graphql",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
