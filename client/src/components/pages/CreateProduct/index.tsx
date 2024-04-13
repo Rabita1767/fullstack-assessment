@@ -30,7 +30,7 @@ const CreateProduct = () => {
 
   useEffect(() => {
     if (createdProduct?.productAdd) {
-      navigate("/products");
+      navigate("/private/products");
     } else if (error) {
       notifications.show({
         title: "Error",

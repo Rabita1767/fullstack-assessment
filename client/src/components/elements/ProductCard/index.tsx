@@ -28,7 +28,7 @@ const ProductCard: React.FC<IProductCard> = ({
   );
 
   return (
-    <Link className="productcard" to={`/products/detail/${id}`}>
+    <Link className="productcard" to={`/private/products/detail/${id}`}>
       <span className="productcard_title">{title}</span>
       <button
         className="productcard_deletebtn"

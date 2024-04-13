@@ -34,7 +34,24 @@ const EditProduct = () => {
     variables: { id: id },
   });
   const { data: categoryList } = useQuery(CATEGORY_LIST_QUERY);
-  const [triggerUpdateProduct] = useMutation(UPDATE_PRODUCT_QUERY);
+  const [triggerUpdateProduct, { data: updatedProduct, error }] =
+    useMutation(UPDATE_PRODUCT_QUERY);
+
+  useEffect(() => {
+    if (updatedProduct?.productUpdate) {
+      notifications.show({
+        title: "Success",
+        message: "Updated product!",
+        color: "green",
+      });
+    } else if (error) {
+      notifications.show({
+        title: "Error",
+        message: "Failed to update product!",
+        color: "red",
+      });
+    }
+  }, [updatedProduct, error]);
 
   useEffect(() => {
     if (productDetails) {
@@ -75,26 +92,38 @@ const EditProduct = () => {
     }
 
     if (formData.rent_rate !== productDetails.product.rent_rate) {
-      requestBody.rent_rate = Number(formData.rent_rate);
+      requestBody.rent_rate = formData.rent_rate;
     }
 
+    if (
+      formData.category.sort().join(",") !==
+      productDetails?.product.category_product
+        .map((element: { category: { id: string } }) => element.category.id)
+        .sort()
+        .join(",")
+    ) {
+      requestBody["category"] = formData.category;
+    }
+    // console.log(
+    //   formData.category,
+    //   productDetails?.product.category_product.map(
+    //     (element: { category: { id: string } }) => element.category.id
+    //   )
+    // );
     if (Object.keys(requestBody).length === 0) {
       notifications.show({
         title: "Error",
         message: "Nothing to update!",
         color: "red",
       });
-    }
+    } else {
+      if (id) {
+        requestBody["id"] = id;
+      }
 
-    requestBody["category"] = formData.category;
-    if (id) {
-      requestBody["id"] = id;
+      triggerUpdateProduct({ variables: requestBody });
     }
-
-    triggerUpdateProduct({ variables: requestBody });
   };
-
-  console.log(categoryList);
 
   return (
     <Layout>
@@ -166,6 +195,12 @@ const EditProduct = () => {
             <Select
               // defaultValue={"hours"}
               value={formData.rent_rate}
+              onChange={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  rent_rate: e ?? "",
+                }))
+              }
               data={[
                 { label: "hour", value: "hour" },
                 { label: "day", value: "day" },

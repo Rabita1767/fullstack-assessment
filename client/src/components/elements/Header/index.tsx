@@ -1,16 +1,25 @@
 import { Button } from "@mantine/core";
 import "./index.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="header">
       <div>
-        <Link to={"/products/create"}>
+        <Link to={"/private/products/create"}>
           <Button>CREATE PRODUCT</Button>
         </Link>
       </div>
-      <Button>LOG OUT</Button>
+      <Button
+        onClick={() => {
+          localStorage.removeItem("user");
+          navigate("/login");
+        }}
+      >
+        LOG OUT
+      </Button>
     </div>
   );
 };
