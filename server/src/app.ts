@@ -73,6 +73,16 @@ const typeDefs = `#graphql
         productId: String
     }
 
+    type Rent_Instance{
+        id:        ID,
+        product:   String,
+        productId: Int,
+        from:      String,
+        to:        String,
+        user:      User
+        userId:    Int
+    }
+
     type Query{
         auths: [Auth],
         login(email: String!, password: String!): Auth,
@@ -99,7 +109,7 @@ const typeDefs = `#graphql
             rent_rate: String!,
             category: [String],
             posted: String!,
-        ): Product
+        ): Product,
         productUpdate(
             id: ID
             title: String,
@@ -108,7 +118,13 @@ const typeDefs = `#graphql
             price: Int,
             rent_amount: Int,
             rent_rate: String
-        ): Product
+        ): Product,
+        rentProduct(
+            productId: Int,
+            userId: Int,
+            from: String,
+            to: String
+        ): Rent_Instance
     }
 `;
 
@@ -301,6 +317,26 @@ const resolvers = {
 
             return product;
         },
+        async rentProduct(
+            _: any,
+            args: {
+                productId: number;
+                userId: number;
+                from: string;
+                to: string;
+            }
+        ) {
+            const newRent = await prisma.rent_Instance.create({
+                data: {
+                    productId: args.productId,
+                    userId: args.userId,
+                    from: new Date(args.from),
+                    to: new Date(args.to),
+                },
+            });
+
+            return newRent;
+        },
     },
 };
 
@@ -342,3 +378,6 @@ try {
 } catch (error) {
     console.log(error);
 }
+
+// npx prisma migrate dev
+// npx prisma db seed

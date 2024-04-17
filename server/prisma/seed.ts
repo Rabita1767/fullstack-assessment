@@ -11,7 +11,6 @@ async function main() {
                 last_name: "Howlader",
                 address: "Dhaka, Bangladesh",
                 phone: "+8801111111111",
-                // email: "snigdho.howlader@gmail.com",
             },
             {
                 id: 2,
@@ -19,7 +18,6 @@ async function main() {
                 last_name: "Saha",
                 address: "Dhaka, Bangladesh",
                 phone: "+8802222222222",
-                // email: "giorno.giovanna@gmail.com",
             },
             {
                 id: 3,
@@ -27,7 +25,6 @@ async function main() {
                 last_name: "Kabir",
                 address: "Dhaka, Bangladesh",
                 phone: "+8803333333333",
-                // email: "jotaro.kujo@morio.com",
             },
         ],
     });
@@ -70,6 +67,13 @@ async function main() {
                 price: 2000,
                 posted: new Date(),
             },
+            {
+                title: "Apple iPhone 15pro max",
+                description:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed elementum tellus. Etiam placerat ullamcorper turpis a ultricies. Cras gravida ipsum sapien, ac suscipit nibh scelerisque nec. Donec maximus finibus velit nec tincidunt. Integer nulla urna, luctus vitae diam sit amet, consectetur luctus erat. Donec nec odio lobortis, eleifend eros sollicitudin, tempor neque. Phasellus bibendum, nisi vitae ultricies imperdiet, quam libero imperdiet augue, ut rhoncus arcu lorem nec quam. Aliquam aliquet enim eu vulputate congue. Donec sodales nunc at lacinia maximus. \n\nCras quis metus ante. Vivamus vestibulum nibh vitae tristique aliquam. Curabitur suscipit efficitur dui, eget pellentesque turpis gravida non. Vivamus a dignissim massa. Nulla lobortis eros vitae risus tristique, sed varius massa pretium. Vivamus at lorem auctor, elementum sem sit amet, finibus ex. Aenean id metus in nulla ultricies tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc arcu nisi, semper luctus vehicula sit amet, luctus ut elit.\n\nFusce quis nisl sit amet lectus dignissim facilisis. ",
+                price: 5000,
+                posted: new Date(),
+            },
         ],
     });
 
@@ -89,6 +93,23 @@ async function main() {
                 name: "electronics",
                 id: 3,
                 created: new Date(),
+            },
+        ],
+    });
+
+    const rent_instance = await prisma.rent_Instance.createMany({
+        data: [
+            {
+                from: new Date("2023-07-01T00:00:00"),
+                to: new Date("2023-07-01T00:00:00"),
+                userId: 1,
+                productId: 1,
+            },
+            {
+                from: new Date("2023-07-01T00:00:00"),
+                to: new Date("2023-07-01T00:00:00"),
+                userId: 1,
+                productId: 2,
             },
         ],
     });

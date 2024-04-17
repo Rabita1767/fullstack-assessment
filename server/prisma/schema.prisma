@@ -29,7 +29,7 @@ model User {
   address       String          @db.VarChar(500)
   phone         String          @db.VarChar(75)
   authId        Auth?
-  Rent_Instance Rent_Instance[]
+  rent_instance Rent_Instance[]
 
   @@map("users")
 }
@@ -77,4 +77,6 @@ model Rent_Instance {
   to        DateTime
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
+
+  @@map("rent_instance")
 }
