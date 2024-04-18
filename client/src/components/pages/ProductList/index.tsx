@@ -8,7 +8,7 @@ const ProductList = () => {
   const { data: productList } = useQuery<IProductList>(PRODUCT_LIST_QUERY);
   return (
     <Layout>
-      {productList?.products
+      {productList?.allProducts
         .slice(0)
         .reverse()
         .map(

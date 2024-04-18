@@ -4,6 +4,7 @@ import Signup from "./components/pages/Signup";
 import ProductList from "./components/pages/ProductList";
 import EditProduct from "./components/pages/EditProduct";
 import CreateProduct from "./components/pages/CreateProduct";
+import { AdminPrivateRoute } from "./components/elements/PrivateRoute";
 
 function App() {
   return (
@@ -13,9 +14,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        <Route path="/private/products" element={<ProductList />} />
-        <Route path="/private/products/create" element={<CreateProduct />} />
-        <Route path="/private/products/detail/:id" element={<EditProduct />} />
+        <Route
+          path="/private/products"
+          element={<AdminPrivateRoute children={<ProductList />} />}
+        />
+        <Route
+          path="/private/products/create"
+          element={<AdminPrivateRoute children={<CreateProduct />} />}
+        />
+        <Route
+          path="/private/products/detail/:id"
+          element={<AdminPrivateRoute children={<EditProduct />} />}
+        />
       </Routes>
     </BrowserRouter>
   );

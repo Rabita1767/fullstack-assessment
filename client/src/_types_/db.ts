@@ -1,5 +1,5 @@
 export interface IProductList {
-  products: {
+  allProducts: {
     id: number;
     title: string;
     description: string;

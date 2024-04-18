@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import { LOGIN_QUERY } from "../../../_types_/gql";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { saveLogin } from "../../../store/auth";
 
 const Login: React.FC = () => {
@@ -21,8 +21,6 @@ const Login: React.FC = () => {
   const [triggerLogin, { data: loginData, error: loginDataError }] =
     useLazyQuery(LOGIN_QUERY);
   const dispatch = useDispatch();
-  const user = useSelector((x) => x);
-  console.log(user);
 
   useEffect(() => {
     if (loginDataError) {

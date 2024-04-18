@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface AuthState {
+export interface AuthState {
   id: string | null;
   email: string | null;
   admin: boolean | null;
