@@ -11,8 +11,16 @@ class _Rent_ {
             to: string;
         }
     ) {
+        if (isNaN(Date.parse(args.from)) || isNaN(Date.parse(args.to))) {
+            throw new GraphQLError(`One of the product rental dates are not valid`!, {
+                extensions: {
+                    code: "BAD_USER_INPUT",
+                    argumentName: "id",
+                },
+            });
+        }
         if (new Date(args.from) >= new Date(args.to)) {
-            throw new GraphQLError(`Product rental dates are not valid`!, {
+            throw new GraphQLError(`Product rental date range is not valid`!, {
                 extensions: {
                     code: "BAD_USER_INPUT",
                     argumentName: "id",

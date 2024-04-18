@@ -1,11 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { GraphQLError } from "graphql";
-import jsonwebtoken from "jsonwebtoken";
 import Auth from "./resolvers/auth";
 import Product from "./resolvers/product";
 import Rent from "./resolvers/rent";
