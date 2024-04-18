@@ -1,0 +1,12 @@
+services:
+    postgres:
+        container_name: teebay-db
+        environment:
+            - POSTGRES_DB=teebay
+            - POSTGRES_HOST_AUTH_METHOD=trust
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        image: postgres:15
+        restart: on-failure
+        ports:
+            - "5431:5432"
