@@ -14,7 +14,7 @@ class _Product_ {
         });
     }
 
-    async oneProduct(_: any, args: { id: string }) {
+    async oneProductQuery(_: any, args: { id: string }) {
         const product = await prisma.product.findFirst({
             where: {
                 id: Number(args.id),

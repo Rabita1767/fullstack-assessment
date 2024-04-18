@@ -7,6 +7,7 @@ import Auth from "./resolvers/auth";
 import Product from "./resolvers/product";
 import Rent from "./resolvers/rent";
 import GQLTypes from "./_types_/gql";
+import Category from "./resolvers/category";
 
 const app = express();
 dotenv.config();
@@ -19,7 +20,8 @@ const resolvers = {
     Query: {
         login: Auth.loginQuery,
         allProducts: Product.allProductsQuery,
-        oneProduct: Product.oneProduct,
+        oneProduct: Product.oneProductQuery,
+        category: Category.allCategoriesQuery,
     },
     Mutation: {
         signup: Auth.signupMutation,
