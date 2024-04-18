@@ -61,18 +61,24 @@ async function main() {
     const products = await prisma.product.createMany({
         data: [
             {
-                title: "Samsung Galax 123",
+                title: "Samsung Galaxy S24 Ultra",
                 description:
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed elementum tellus. Etiam placerat ullamcorper turpis a ultricies. Cras gravida ipsum sapien, ac suscipit nibh scelerisque nec. Donec maximus finibus velit nec tincidunt. Integer nulla urna, luctus vitae diam sit amet, consectetur luctus erat. Donec nec odio lobortis, eleifend eros sollicitudin, tempor neque. Phasellus bibendum, nisi vitae ultricies imperdiet, quam libero imperdiet augue, ut rhoncus arcu lorem nec quam. Aliquam aliquet enim eu vulputate congue. Donec sodales nunc at lacinia maximus. \n\nCras quis metus ante. Vivamus vestibulum nibh vitae tristique aliquam. Curabitur suscipit efficitur dui, eget pellentesque turpis gravida non. Vivamus a dignissim massa. Nulla lobortis eros vitae risus tristique, sed varius massa pretium. Vivamus at lorem auctor, elementum sem sit amet, finibus ex. Aenean id metus in nulla ultricies tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc arcu nisi, semper luctus vehicula sit amet, luctus ut elit.\n\nFusce quis nisl sit amet lectus dignissim facilisis. ",
-                price: 2000,
+                    "With the most megapixels on a smartphone and AI processing, Galaxy S24 Ultra sets the industry standard for image quality every time you hit the shutter. What's more, the new ProVisual engine recognizes objects — improving color tone, reducing noise and bringing out detail.",
+                price: 1299,
                 posted: new Date(),
+                rent_amount: 50,
+                rent_rate: "month",
+                views: 2642,
             },
             {
-                title: "Apple iPhone 15pro max",
+                title: "Apple iPhone 15 Pro max",
                 description:
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed elementum tellus. Etiam placerat ullamcorper turpis a ultricies. Cras gravida ipsum sapien, ac suscipit nibh scelerisque nec. Donec maximus finibus velit nec tincidunt. Integer nulla urna, luctus vitae diam sit amet, consectetur luctus erat. Donec nec odio lobortis, eleifend eros sollicitudin, tempor neque. Phasellus bibendum, nisi vitae ultricies imperdiet, quam libero imperdiet augue, ut rhoncus arcu lorem nec quam. Aliquam aliquet enim eu vulputate congue. Donec sodales nunc at lacinia maximus. \n\nCras quis metus ante. Vivamus vestibulum nibh vitae tristique aliquam. Curabitur suscipit efficitur dui, eget pellentesque turpis gravida non. Vivamus a dignissim massa. Nulla lobortis eros vitae risus tristique, sed varius massa pretium. Vivamus at lorem auctor, elementum sem sit amet, finibus ex. Aenean id metus in nulla ultricies tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc arcu nisi, semper luctus vehicula sit amet, luctus ut elit.\n\nFusce quis nisl sit amet lectus dignissim facilisis. ",
-                price: 5000,
+                    "The iPhone 15 Pro Max is the latest addition to the iPhone 15 series, which includes the iPhone 15, iPhone 15 Plus, and iPhone 15 Pro. This smartphone offers 5G connectivity and is available in a range of colors, including Black Titanium, Blue Titanium, Natural Titanium, and White Titanium.",
+                price: 1199,
                 posted: new Date(),
+                rent_amount: 60,
+                rent_rate: "month",
+                views: 2513,
             },
         ],
     });
