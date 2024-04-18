@@ -56,17 +56,17 @@ const EditProduct = () => {
   useEffect(() => {
     if (productDetails) {
       setFormData({
-        title: productDetails?.product.title,
-        description: productDetails?.product.description,
-        price: productDetails?.product.price,
-        rent_amount: productDetails?.product.rent_amount ?? 0,
-        rent_rate: productDetails?.product.rent_rate ?? "hours",
-        category: productDetails?.product.category_product.map(
+        title: productDetails?.oneProduct.title,
+        description: productDetails?.oneProduct.description,
+        price: productDetails?.oneProduct.price,
+        rent_amount: productDetails?.oneProduct.rent_amount ?? 0,
+        rent_rate: productDetails?.oneProduct.rent_rate ?? "hours",
+        category: productDetails?.oneProduct.category_product.map(
           (element: { category: { id: string } }) => element.category.id
         ),
       });
       // setSelectedCategories(
-      //   productDetails?.product.category_product.map((element) => element["id"])
+      //   productDetails?.oneProduct.category_product.map((element) => element["id"])
       // );
     }
   }, [productDetails]);
@@ -75,29 +75,29 @@ const EditProduct = () => {
     e.preventDefault();
     const requestBody: { [key: string]: string | number | string[] } = {};
 
-    if (formData.title !== productDetails.product.title) {
+    if (formData.title !== productDetails.oneProduct.title) {
       requestBody["title"] = formData.title;
     }
 
-    if (formData.description !== productDetails.product.description) {
+    if (formData.description !== productDetails.oneProduct.description) {
       requestBody["description"] = formData.description;
     }
 
-    if (formData.price !== productDetails.product.price) {
+    if (formData.price !== productDetails.oneProduct.price) {
       requestBody["price"] = Number(formData.price);
     }
 
-    if (formData.rent_amount !== productDetails.product.rent_amount) {
+    if (formData.rent_amount !== productDetails.oneProduct.rent_amount) {
       requestBody.rent_amount = Number(formData.rent_amount);
     }
 
-    if (formData.rent_rate !== productDetails.product.rent_rate) {
+    if (formData.rent_rate !== productDetails.oneProduct.rent_rate) {
       requestBody.rent_rate = formData.rent_rate;
     }
 
     if (
       formData.category.sort().join(",") !==
-      productDetails?.product.category_product
+      productDetails?.oneProduct.category_product
         .map((element: { category: { id: string } }) => element.category.id)
         .sort()
         .join(",")
@@ -106,7 +106,7 @@ const EditProduct = () => {
     }
     // console.log(
     //   formData.category,
-    //   productDetails?.product.category_product.map(
+    //   productDetails?.oneProduct.category_product.map(
     //     (element: { category: { id: string } }) => element.category.id
     //   )
     // );
@@ -141,12 +141,12 @@ const EditProduct = () => {
         </InputWrapper>
         <InputWrapper label="Category" className="editproduct_category">
           <MultiSelect
-            value={formData.category}
+            value={formData?.category}
             onChange={(e) => {
               // console.log(e);
               setFormData((prevState) => ({ ...prevState, category: e }));
             }}
-            data={categoryList?.category.map(
+            data={categoryList?.category?.map(
               (element: { id: string; name: string }) => ({
                 label: element.name,
                 value: element.id,

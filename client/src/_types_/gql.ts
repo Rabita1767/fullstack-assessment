@@ -24,7 +24,7 @@ export const PRODUCT_LIST_QUERY = gql`
 
 export const SINGLE_PRODUCT_QUERY = gql`
   query Query($id: String!) {
-    product(id: $id) {
+    oneProduct(id: $id) {
       id
       title
       description

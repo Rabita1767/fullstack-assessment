@@ -10,6 +10,7 @@ import {
 } from "../../../_types_/gql";
 import { useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
+import routes from "../../../constants/routes";
 
 const CreateProduct = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const CreateProduct = () => {
         message: "Successfully added product",
         color: "green",
       });
-      navigate("/private/products");
+      navigate(routes.PRODUCT_LIST_PAGE);
     } else if (error) {
       notifications.show({
         title: "Error",

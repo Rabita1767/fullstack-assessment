@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ISignup } from "../../../_types_/client";
 import { SIGNUP_QUERY } from "../../../_types_/gql";
+import routes from "../../../constants/routes";
 
 const Signup: React.FC = () => {
   const [signupData, setSignupData] = useState<ISignup>({
@@ -164,7 +165,10 @@ const Signup: React.FC = () => {
           </Button>
           <span className="signup_card_action_forgot">
             Already have an account?{" "}
-            <Link to="/login" className="signup_card_action_forgot_link">
+            <Link
+              to={routes.LOGIN_PAGE}
+              className="signup_card_action_forgot_link"
+            >
               Sign in
             </Link>
           </span>

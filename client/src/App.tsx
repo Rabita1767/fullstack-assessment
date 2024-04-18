@@ -4,19 +4,23 @@ import Signup from "./components/pages/Signup";
 import ProductList from "./components/pages/ProductList";
 import EditProduct from "./components/pages/EditProduct";
 import CreateProduct from "./components/pages/CreateProduct";
-import { AdminPrivateRoute } from "./components/elements/PrivateRoute";
+import {
+  AdminPrivateRoute,
+  RegularPrivateRoute,
+} from "./components/elements/PrivateRoute";
+import routes from "./constants/routes";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Navigate to={routes.LOGIN_PAGE} />} />
+        <Route path={routes.LOGIN_PAGE} element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
         <Route
-          path="/private/products"
-          element={<AdminPrivateRoute children={<ProductList />} />}
+          path={routes.PRODUCT_LIST_PAGE}
+          element={<RegularPrivateRoute children={<ProductList />} />}
         />
         <Route
           path="/private/products/create"
