@@ -11,6 +11,17 @@ class _Auth_ {
             },
             include: { user: true },
         });
+
+        if (!auth) {
+            console.log("Incorrect email or password!");
+            throw new GraphQLError("Incorrect email or password!", {
+                extensions: {
+                    code: "BAD_USER_INPUT",
+                    argumentName: "id",
+                },
+            });
+        }
+
         const response: {
             [key: string]: any;
         } = {
@@ -26,7 +37,7 @@ class _Auth_ {
         console.log(response);
         return response;
     }
-    
+
     async signupMutation(
         _: any,
         args: {

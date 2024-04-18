@@ -5,24 +5,31 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import { LOGIN_QUERY } from "../../../_types_/gql";
+import { useDispatch, useSelector } from "react-redux";
+import { saveLogin } from "../../../store/auth";
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState<{
     email: string;
     password: string;
   }>({
-    email: "",
-    password: "",
+    email: "snigdho.howlder@gmail.com",
+    password: "Abc@1234",
   });
   const navigate = useNavigate();
 
-  const [triggerLogin, { data: loginData }] = useLazyQuery(LOGIN_QUERY);
+  const [triggerLogin, { data: loginData, error: loginDataError }] =
+    useLazyQuery(LOGIN_QUERY);
+  const dispatch = useDispatch();
+  const user = useSelector((x) => x);
+  console.log(user);
 
   useEffect(() => {
-    if (loginData?.login === null) {
+    if (loginDataError) {
+      console.log(loginDataError);
       notifications.show({
         title: "Error",
-        message: "Invalid user!",
+        message: loginDataError.message,
         color: "red",
       });
     }
@@ -32,22 +39,9 @@ const Login: React.FC = () => {
         message: "Successfully logged in!",
         color: "green",
       });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: loginData.login.id,
-          email: loginData.login.email,
-          admin: loginData.login.admin,
-          user: {
-            id: loginData.login.user.id,
-            first_name: loginData.login.user.first_name,
-            last_name: loginData.login.user.last_name,
-          },
-        })
-      );
-      window.location.pathname = "/private/products";
+      dispatch(saveLogin(loginData.login));
     }
-  }, [loginData, navigate]);
+  }, [loginData, loginDataError, navigate, dispatch]);
 
   return (
     <div className="login">

@@ -135,6 +135,7 @@ export const LOGIN_QUERY = gql`
       email
       status
       admin
+      token
       user {
         id
         first_name
