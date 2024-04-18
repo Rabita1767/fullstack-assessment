@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./index.scss";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Button, Modal } from "@mantine/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 interface IProductCard {
   id: number;
@@ -26,18 +28,48 @@ const ProductCard: React.FC<IProductCard> = ({
   const [seeMore, setSeeMore] = useState<boolean>(
     description.length > 220 ? true : false
   );
+  // const [opened, {open, close}] = useDisclosure
+  const [modal, setModal] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   return (
-    <Link className="productcard" to={`/private/products/detail/${id}`}>
-      <span className="productcard_title">{title}</span>
-      <button
-        className="productcard_deletebtn"
-        onClick={(e) => {
-          e.preventDefault();
-        }}
+    <div
+      className="productcard"
+      // to={`/private/products/detail/${id}`}
+    >
+      <Modal
+        opened={modal}
+        onClose={() => setModal(false)}
+        className="productcard_modal"
       >
-        <FontAwesomeIcon icon={faTrashAlt} />
-      </button>
+        <span>Are you sure you want to delete this product?</span>
+        <div className="productcard_modal_buttons">
+          <Button color="red" onClick={() => setModal(false)}>
+            No
+          </Button>
+          <Button>Yes</Button>
+        </div>
+      </Modal>
+      <span className="productcard_title">{title}</span>
+      <div className="productcard_buttons">
+        <button
+          className="productcard_editbtn"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/private/products/detail/${id}`);
+          }}
+        >
+          <FontAwesomeIcon icon={faEdit} />
+        </button>
+        <button
+          className="productcard_deletebtn"
+          onClick={() => {
+            setModal(true);
+          }}
+        >
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </button>
+      </div>
       <span className="productcard_category">Category: {category}</span>
       <span className="productcard_price">Price: {price}</span>
       <span className="productcard_description">
@@ -54,7 +86,7 @@ const ProductCard: React.FC<IProductCard> = ({
       </span>
       <span className="productcard_posted">{posted}</span>
       <span className="productcard_views">{views} views</span>
-    </Link>
+    </div>
   );
 };
 
