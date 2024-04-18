@@ -7,7 +7,9 @@ import "@mantine/core/styles.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
-import { UserContext } from "./store/user.ts";
+import { store, persistor } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
 
 const theme = createTheme({});
 
@@ -20,15 +22,15 @@ const client = new ApolloClient({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <UserContext.Provider
-        value={JSON.parse(localStorage.getItem("user") as string)}
-      >
-        <MantineProvider theme={theme}>
-          <Notifications position="top-right" limit={5} />
-          <App />
-        </MantineProvider>
-      </UserContext.Provider>
-    </ApolloProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ApolloProvider client={client}>
+          <MantineProvider theme={theme}>
+            <Notifications position="top-right" limit={5} />
+            <App />
+          </MantineProvider>
+        </ApolloProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );

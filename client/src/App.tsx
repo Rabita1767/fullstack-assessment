@@ -4,11 +4,8 @@ import Signup from "./components/pages/Signup";
 import ProductList from "./components/pages/ProductList";
 import EditProduct from "./components/pages/EditProduct";
 import CreateProduct from "./components/pages/CreateProduct";
-import { useContext } from "react";
-import { UserContext } from "./store/user";
 
 function App() {
-  const userContext: { email: string } = useContext(UserContext);
   return (
     <BrowserRouter>
       <Routes>
@@ -16,24 +13,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        <Route
-          path="/private/products"
-          element={
-            userContext?.email ? <ProductList /> : <Navigate to={"/login"} />
-          }
-        />
-        <Route
-          path="/private/products/create"
-          element={
-            userContext?.email ? <CreateProduct /> : <Navigate to={"/login"} />
-          }
-        />
-        <Route
-          path="/private/products/detail/:id"
-          element={
-            userContext?.email ? <EditProduct /> : <Navigate to={"/login"} />
-          }
-        />
+        <Route path="/private/products" element={<ProductList />} />
+        <Route path="/private/products/create" element={<CreateProduct />} />
+        <Route path="/private/products/detail/:id" element={<EditProduct />} />
       </Routes>
     </BrowserRouter>
   );
