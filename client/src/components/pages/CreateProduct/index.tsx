@@ -11,6 +11,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import routes from "../../../constants/routes";
+import { useSelector } from "react-redux";
+import { AuthState } from "../../../store/auth";
 
 const CreateProduct = () => {
   const navigate = useNavigate();
@@ -22,12 +24,14 @@ const CreateProduct = () => {
     price: 0,
     rent_amount: 0,
     rent_rate: "hours",
+    userId: -1,
   });
 
   const { data: categoryList } = useQuery(CATEGORY_LIST_QUERY);
   const [triggerCreateProduct, { data: createdProduct, error }] = useMutation(
     CREATE_PRODUCT_MUTATION
   );
+  const auth = useSelector((x: { auth: AuthState }) => x.auth);
 
   useEffect(() => {
     if (createdProduct?.productAdd) {
@@ -36,7 +40,7 @@ const CreateProduct = () => {
         message: "Successfully added product",
         color: "green",
       });
-      navigate(routes.MY_PRODUCT_LIST_PAGE);
+      navigate(`/products/self`);
     } else if (error) {
       notifications.show({
         title: "Error",
@@ -179,8 +183,8 @@ const CreateProduct = () => {
               if (step < 4) {
                 setStep((prevState) => prevState + 1);
               } else if (step === 4) {
-                console.log(formData);
                 formData.posted = new Date();
+                formData.userId = Number(auth.user.id);
                 triggerCreateProduct({ variables: formData });
               }
             }}

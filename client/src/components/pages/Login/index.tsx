@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         color: "green",
       });
       dispatch(saveLogin(loginData.login));
-      navigate(routes.MY_PRODUCT_LIST_PAGE);
+      navigate(routes.ALL_PRODUCT_LIST_PAGE);
     }
   }, [loginData, loginDataError, navigate, dispatch]);
 

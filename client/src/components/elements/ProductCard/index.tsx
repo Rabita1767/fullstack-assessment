@@ -90,7 +90,7 @@ const ProductCard: React.FC<IProductCard> = ({
             </button>
           </>
         ) : null}
-        {auth.user.id !== user?.id ? <button>View Product</button> : null}
+        {/* {auth.user.id !== user?.id ? <button>View Product</button> : null} */}
       </div>
       <span className="productcard_category">Category: {category}</span>
       <span className="productcard_price">Price: {price}</span>

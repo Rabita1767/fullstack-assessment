@@ -21,6 +21,13 @@ export const ALL_PRODUCT_LIST_QUERY = gql`
           name
         }
       }
+      rent_instance {
+        id
+        productId
+        from
+        to
+        userId
+      }
     }
   }
 `;
@@ -60,6 +67,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
     $rent_rate: String!
     $posted: String!
     $category: [String]!
+    $userId: Int!
   ) {
     productAdd(
       title: $title
@@ -69,6 +77,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
       rent_rate: $rent_rate
       posted: $posted
       category: $category
+      userId: $userId
     ) {
       id
       title
@@ -120,6 +129,42 @@ export const UPDATE_PRODUCT_QUERY = gql`
         category {
           name
         }
+      }
+    }
+  }
+`;
+
+export const RENT_PRODUCT = gql`
+  mutation Mutation(
+    $productId: Int!
+    $userId: Int!
+    $from: String!
+    $to: String!
+  ) {
+    rentProduct(productId: $productId, userId: $userId, from: $from, to: $to) {
+      id
+      productId
+      from
+      to
+      userId
+      product {
+        id
+        title
+        description
+        price
+        rent_amount
+        rent_rate
+        posted
+        views
+        status
+        userId
+      }
+      user {
+        id
+        first_name
+        last_name
+        address
+        phone
       }
     }
   }

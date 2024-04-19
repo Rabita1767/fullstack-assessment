@@ -16,4 +16,5 @@ export interface IProductInput {
   rent_rate: string; // "hours" | "days" | "weeks" | "months";
   category: string[];
   posted?: Date;
+  userId: number;
 }

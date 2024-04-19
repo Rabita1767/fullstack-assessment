@@ -78,7 +78,7 @@ export const AllProductList = () => {
                 posted={posted}
                 views={views}
                 category={category_product
-                  .map((category_product) => category_product.category.name)
+                  ?.map((category_product) => category_product.category.name)
                   .join(", ")}
                 user={user}
               />

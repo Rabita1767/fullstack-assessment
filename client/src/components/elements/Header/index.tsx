@@ -11,7 +11,7 @@ const Header = () => {
       {/* <Link to={routes.MY_PRODUCT_LIST_PAGE}>
         <Button>MY PRODUCTS</Button>
       </Link> */}
-      <Link to={routes.ALL_PRODUCT_LIST_PAGE}>
+      <Link to={`/products/self`}>
         <Button>ALL PRODUCTS</Button>
       </Link>
       <Link to={routes.PRODUCT_CREATE_PAGE}>
