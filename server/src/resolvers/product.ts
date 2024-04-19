@@ -1,17 +1,54 @@
 import { prisma } from "../config/prisma";
 
 class _Product_ {
-    async allProductsQuery() {
-        return prisma.product.findMany({
-            include: {
-                category_product: {
-                    include: {
-                        category: true,
+    async allProductsQuery(
+        _: any,
+        args: {
+            userId: number;
+            filter: "self" | "others" | "bought" | "sold" | "borrowed" | "lent";
+        }
+    ) {
+        let products;
+        switch (args.filter) {
+            case "others":
+                products = await prisma.product.findMany({
+                    where: {
+                        NOT: {
+                            userId: Number(args.userId),
+                        },
                     },
-                    take: 100,
-                },
-            },
-        });
+                    include: {
+                        category_product: {
+                            include: {
+                                category: true,
+                            },
+                            take: 100,
+                        },
+                        user: true,
+                    },
+                });
+                break;
+            case "self": {
+                products = await prisma.product.findMany({
+                    where: {
+                        userId: Number(args.userId),
+                    },
+                    include: {
+                        category_product: {
+                            include: {
+                                category: true,
+                            },
+                            take: 100,
+                        },
+                        user: true,
+                    },
+                });
+                break;
+            }
+            default:
+                break;
+        }
+        return products;
     }
 
     async oneProductQuery(_: any, args: { id: string }) {
@@ -25,6 +62,7 @@ class _Product_ {
                         category: true,
                     },
                 },
+                user: true,
             },
         });
         // console.log(product?.category_product);
@@ -41,6 +79,7 @@ class _Product_ {
             rent_rate: string;
             category: string[];
             posted: string;
+            userId: number;
         }
     ) {
         // const { title } = args;
@@ -54,6 +93,7 @@ class _Product_ {
                 posted: new Date(args.posted),
                 status: true,
                 views: 0,
+                userId: args.userId,
             },
         });
         const category_product = await prisma.category_Product.createMany({

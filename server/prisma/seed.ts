@@ -6,21 +6,18 @@ async function main() {
     const users = await prisma.user.createMany({
         data: [
             {
-                id: 1,
                 first_name: "Snigdho Dip",
                 last_name: "Howlader",
                 address: "Dhaka, Bangladesh",
                 phone: "+8801111111111",
             },
             {
-                id: 2,
                 first_name: "Arup Kumar",
                 last_name: "Saha",
                 address: "Dhaka, Bangladesh",
                 phone: "+8802222222222",
             },
             {
-                id: 3,
                 first_name: "Meraj",
                 last_name: "Kabir",
                 address: "Dhaka, Bangladesh",
@@ -32,15 +29,13 @@ async function main() {
     const auth = await prisma.auth.createMany({
         data: [
             {
-                id: 1,
                 email: "snigdho.howlader@gmail.com",
                 password: "Abc@1234",
                 userId: 1,
-                admin: true,
+                admin: false,
                 status: true,
             },
             {
-                id: 2,
                 email: "arup.kumar@gmail.com",
                 password: "Abc@1234",
                 userId: 2,
@@ -48,7 +43,6 @@ async function main() {
                 status: true,
             },
             {
-                id: 3,
                 email: "meraj.kabir@gmail.com",
                 password: "Abc@1234",
                 userId: 3,
@@ -69,6 +63,7 @@ async function main() {
                 rent_amount: 50,
                 rent_rate: "month",
                 views: 2642,
+                userId: 1,
             },
             {
                 title: "Apple iPhone 15 Pro max",
@@ -79,6 +74,19 @@ async function main() {
                 rent_amount: 60,
                 rent_rate: "month",
                 views: 2513,
+                userId: 1,
+            },
+
+            {
+                title: "Dining Table",
+                description:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sem mauris, pulvinar non congue a, placerat a est. Vestibulum pretium convallis ultrices. Duis eu feugiat metus. Cras quis imperdiet leo, nec lobortis risus. Praesent quis interdum justo. Suspendisse sit amet lacus non magna aliquet bibendum. Maecenas sit amet porta lorem. Etiam pulvinar nibh et porttitor tincidunt. Nulla ac est urna. Nam feugiat ipsum eu nisl dignissim ultrices. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
+                price: 500,
+                posted: new Date(),
+                rent_amount: 70,
+                rent_rate: "month",
+                views: 2513,
+                userId: 2,
             },
         ],
     });
@@ -86,19 +94,45 @@ async function main() {
     const categories = await prisma.category.createMany({
         data: [
             {
-                name: "smartphones",
-                id: 1,
+                name: "ELECTRONICS",
                 created: new Date(),
             },
             {
-                name: "phones",
-                id: 2,
+                name: "FURNITURE",
                 created: new Date(),
             },
             {
-                name: "electronics",
-                id: 3,
+                name: "HOME APPLIANCES",
                 created: new Date(),
+            },
+            {
+                name: "SPORTING GOODS",
+                created: new Date(),
+            },
+            {
+                name: "OUTDOOR",
+                created: new Date(),
+            },
+            {
+                name: "TOYS",
+                created: new Date(),
+            },
+        ],
+    });
+
+    const category_product = await prisma.category_Product.createMany({
+        data: [
+            {
+                categoryId: 1,
+                productId: 1,
+            },
+            {
+                categoryId: 1,
+                productId: 2,
+            },
+            {
+                categoryId: 2,
+                productId: 3,
             },
         ],
     });

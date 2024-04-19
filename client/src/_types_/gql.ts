@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const PRODUCT_LIST_QUERY = gql`
-  query Query {
-    allProducts {
+export const ALL_PRODUCT_LIST_QUERY = gql`
+  query Query($userId: Int!, $filter: String!) {
+    allProducts(userId: $userId, filter: $filter) {
       id
       title
       description
@@ -12,6 +12,9 @@ export const PRODUCT_LIST_QUERY = gql`
       posted
       views
       status
+      user {
+        id
+      }
       category_product {
         category {
           id
@@ -34,6 +37,9 @@ export const SINGLE_PRODUCT_QUERY = gql`
       posted
       views
       status
+      user {
+        id
+      }
       category_product {
         id
         category {

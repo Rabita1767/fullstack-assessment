@@ -42,6 +42,8 @@ const GQLTypes = `#graphql
         views: Int,
         status: String
         category_product: [Category_Product],
+        userId: Int,
+        user: User
     }
 
     type Category{
@@ -71,7 +73,7 @@ const GQLTypes = `#graphql
     type Query{
         login(email: String!, password: String!): Auth,
         users: [User],
-        allProducts: [Product]
+        allProducts(userId: Int!, filter: String!): [Product],
         oneProduct(id: String!): Product
         category: [Category]
     }

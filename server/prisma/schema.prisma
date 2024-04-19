@@ -30,6 +30,8 @@ model User {
   phone         String          @db.VarChar(75)
   authId        Auth?
   rent_instance Rent_Instance[]
+  product       Product[]
+  purchases     Purchases[]
 
   @@map("users")
 }
@@ -46,6 +48,9 @@ model Product {
   status           Boolean            @default(true)
   category_product Category_Product[]
   rent_instance    Rent_Instance[]
+  user             User               @relation(fields: [userId], references: [id])
+  userId           Int
+  purchases        Purchases[]
 
   @@map("products")
 }
@@ -79,4 +84,15 @@ model Rent_Instance {
   userId    Int
 
   @@map("rent_instance")
+}
+
+model Purchases {
+  id        Int      @id @default(autoincrement())
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  date      DateTime
+
+  @@map("purchases")
 }
