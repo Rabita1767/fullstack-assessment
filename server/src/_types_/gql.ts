@@ -44,6 +44,7 @@ const GQLTypes = `#graphql
         category_product: [Category_Product],
         userId: Int,
         user: User
+        rent_instance: [Rent_Instance]
     }
 
     type Category{
@@ -62,12 +63,20 @@ const GQLTypes = `#graphql
 
     type Rent_Instance{
         id:        ID,
-        product:   String,
+        product:   Product,
         productId: Int,
         from:      String,
         to:        String,
         user:      User
         userId:    Int
+    }
+
+    type Purchase{
+        id: ID,
+        productId: Int,
+        product: Product,
+        userId: Int,
+        user: User
     }
 
     type Query{
@@ -95,6 +104,7 @@ const GQLTypes = `#graphql
             rent_rate: String!,
             category: [String],
             posted: String!,
+            userId: Int!
         ): Product,
         productUpdate(
             id: ID
@@ -110,7 +120,11 @@ const GQLTypes = `#graphql
             userId: Int,
             from: String,
             to: String
-        ): Rent_Instance
+        ): Rent_Instance,
+        purchaseProduct(
+            productId: Int,
+            userId: Int,
+        ): Purchase
     }
 `;
 

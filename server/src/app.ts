@@ -8,6 +8,7 @@ import Product from "./resolvers/product";
 import Rent from "./resolvers/rent";
 import GQLTypes from "./_types_/gql";
 import Category from "./resolvers/category";
+import Purchase from "./resolvers/purchase";
 
 const app = express();
 dotenv.config();
@@ -28,6 +29,7 @@ const resolvers = {
         productAdd: Product.productAddMutation,
         productUpdate: Product.productUpdateMutation,
         rentProduct: Rent.rentProductMutation,
+        purchaseProduct: Purchase.purchaseProduct,
     },
 };
 

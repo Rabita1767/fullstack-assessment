@@ -10,7 +10,7 @@ class _Product_ {
     ) {
         let products;
         switch (args.filter) {
-            case "others":
+            case "others": {
                 products = await prisma.product.findMany({
                     where: {
                         NOT: {
@@ -28,6 +28,7 @@ class _Product_ {
                     },
                 });
                 break;
+            }
             case "self": {
                 products = await prisma.product.findMany({
                     where: {
@@ -43,6 +44,80 @@ class _Product_ {
                         user: true,
                     },
                 });
+                break;
+            }
+            case "bought": {
+                const purchases = await prisma.purchases.findMany({
+                    where: {
+                        userId: Number(args.userId),
+                    },
+                });
+                products = await prisma.product.findMany({
+                    where: {
+                        userId: Number(args.userId),
+                    },
+                    include: {
+                        category_product: {
+                            include: {
+                                category: true,
+                            },
+                            take: 100,
+                        },
+                        user: true,
+                    },
+                });
+                break;
+            }
+            case "borrowed": {
+                const productIds = await prisma.rent_Instance.findMany({
+                    where: {
+                        userId: Number(args.userId),
+                    },
+                });
+                console.log(productIds);
+                products = await prisma.product.findMany({
+                    where: {
+                        id: {
+                            in: productIds.map((element) => {
+                                return element.productId;
+                            }),
+                        },
+                    },
+                    include: {
+                        rent_instance: true,
+                        user: true,
+                    },
+                });
+                // console.log(products);
+                break;
+            }
+            case "lent": {
+                const productIds = await prisma.rent_Instance.findMany({
+                    where: {
+                        product: {
+                            userId: Number(args.userId),
+                        },
+                    },
+                    include: {
+                        product: true,
+                    },
+                });
+                console.log(productIds);
+                products = await prisma.product.findMany({
+                    where: {
+                        userId: Number(args.userId),
+                        id: {
+                            in: productIds.map((element) => {
+                                return element.product.userId;
+                            }),
+                        },
+                    },
+                    include: {
+                        rent_instance: true,
+                        user: true,
+                    },
+                });
+                // console.log(products);
                 break;
             }
             default:

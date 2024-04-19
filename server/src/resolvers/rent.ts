@@ -11,7 +11,12 @@ class _Rent_ {
             to: string;
         }
     ) {
-        if (isNaN(Date.parse(args.from)) || isNaN(Date.parse(args.to))) {
+        if (
+            isNaN(Date.parse(args.from)) ||
+            isNaN(Date.parse(args.to)) ||
+            new Date(args.from).getTime() < new Date().getTime() ||
+            new Date(args.to).getTime() < new Date().getTime()
+        ) {
             throw new GraphQLError(`One of the product rental dates are not valid`!, {
                 extensions: {
                     code: "BAD_USER_INPUT",
@@ -47,7 +52,9 @@ class _Rent_ {
         // console.log(existing);
         if (existing) {
             throw new GraphQLError(
-                `Product is already rented between ${new Date(args.from)} and ${new Date(args.to)}`!,
+                `Product is already rented between ${new Date(args.from)} and ${new Date(
+                    args.to
+                )}`!,
                 {
                     extensions: {
                         code: "BAD_USER_INPUT",
@@ -64,7 +71,12 @@ class _Rent_ {
                 from: new Date(args.from),
                 to: new Date(args.to),
             },
+            include: {
+                product: true,
+                user: true,
+            },
         });
+        console.log(newRent);
 
         return newRent;
     }
