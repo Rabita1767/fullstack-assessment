@@ -3,8 +3,11 @@ import "./index.scss";
 // import { Link } from "react-router-dom";
 import { Button, Modal } from "@mantine/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AuthState } from "../../../store/auth";
+import routes from "../../../constants/routes";
 
 interface IProductCard {
   id: number;
@@ -31,7 +34,8 @@ const ProductCard: React.FC<IProductCard> = ({
   // const [opened, {open, close}] = useDisclosure
   const [modal, setModal] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  const auth = useSelector((x: { auth: AuthState }) => x.auth);
+  console.log(auth.admin);
   return (
     <div
       className="productcard"
@@ -56,19 +60,33 @@ const ProductCard: React.FC<IProductCard> = ({
           className="productcard_editbtn"
           onClick={(e) => {
             e.preventDefault();
-            navigate(`/private/products/detail/${id}`);
+            navigate(`${routes.PRODUCT_DETAIL_PAGE}/${id}`);
           }}
         >
-          <FontAwesomeIcon icon={faEdit} />
+          <FontAwesomeIcon icon={faEye} />
         </button>
-        <button
-          className="productcard_deletebtn"
-          onClick={() => {
-            setModal(true);
-          }}
-        >
-          <FontAwesomeIcon icon={faTrashAlt} />
-        </button>
+        {auth.admin ? (
+          <>
+            <button
+              className="productcard_editbtn"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`${routes.PRODUCT_EDIT_PAGE}/${id}`);
+              }}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </button>
+            <button
+              className="productcard_deletebtn"
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+          </>
+        ) : null}
+        {!auth.admin ? <button>View Product</button> : null}
       </div>
       <span className="productcard_category">Category: {category}</span>
       <span className="productcard_price">Price: {price}</span>
@@ -84,7 +102,12 @@ const ProductCard: React.FC<IProductCard> = ({
           </button>
         ) : null}
       </span>
-      <span className="productcard_posted">{posted}</span>
+      <span className="productcard_posted">
+        Date posted:{" "}
+        {`${new Date(Number(posted)).getDate()}-${new Date(
+          Number(posted)
+        ).getMonth()}-${new Date(Number(posted)).getFullYear()}`}
+      </span>
       <span className="productcard_views">{views} views</span>
     </div>
   );

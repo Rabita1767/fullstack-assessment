@@ -5,7 +5,9 @@ import { IProductList } from "../../../_types_/db";
 import { PRODUCT_LIST_QUERY } from "../../../_types_/gql";
 
 const ProductList = () => {
-  const { data: productList } = useQuery<IProductList>(PRODUCT_LIST_QUERY);
+  const { data: productList } = useQuery<IProductList>(PRODUCT_LIST_QUERY, {
+    fetchPolicy: "no-cache",
+  });
   return (
     <Layout>
       {productList?.allProducts
