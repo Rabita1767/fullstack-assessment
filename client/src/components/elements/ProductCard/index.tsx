@@ -17,6 +17,9 @@ interface IProductCard {
   description: string;
   posted: number;
   views: number;
+  user: {
+    id: string;
+  };
 }
 
 const ProductCard: React.FC<IProductCard> = ({
@@ -27,6 +30,7 @@ const ProductCard: React.FC<IProductCard> = ({
   description,
   posted,
   views,
+  user,
 }) => {
   const [seeMore, setSeeMore] = useState<boolean>(
     description.length > 220 ? true : false
@@ -35,7 +39,7 @@ const ProductCard: React.FC<IProductCard> = ({
   const [modal, setModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const auth = useSelector((x: { auth: AuthState }) => x.auth);
-  console.log(auth.admin);
+
   return (
     <div
       className="productcard"
@@ -65,7 +69,7 @@ const ProductCard: React.FC<IProductCard> = ({
         >
           <FontAwesomeIcon icon={faEye} />
         </button>
-        {auth.admin ? (
+        {auth.user.id === user?.id ? (
           <>
             <button
               className="productcard_editbtn"
@@ -86,7 +90,7 @@ const ProductCard: React.FC<IProductCard> = ({
             </button>
           </>
         ) : null}
-        {!auth.admin ? <button>View Product</button> : null}
+        {auth.user.id !== user?.id ? <button>View Product</button> : null}
       </div>
       <span className="productcard_category">Category: {category}</span>
       <span className="productcard_price">Price: {price}</span>

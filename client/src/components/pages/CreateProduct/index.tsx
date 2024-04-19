@@ -36,7 +36,7 @@ const CreateProduct = () => {
         message: "Successfully added product",
         color: "green",
       });
-      navigate(routes.PRODUCT_LIST_PAGE);
+      navigate(routes.MY_PRODUCT_LIST_PAGE);
     } else if (error) {
       notifications.show({
         title: "Error",

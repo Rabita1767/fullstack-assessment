@@ -8,7 +8,10 @@ const Header = () => {
 
   return (
     <div className="header">
-      <Link to={routes.PRODUCT_LIST_PAGE}>
+      {/* <Link to={routes.MY_PRODUCT_LIST_PAGE}>
+        <Button>MY PRODUCTS</Button>
+      </Link> */}
+      <Link to={routes.ALL_PRODUCT_LIST_PAGE}>
         <Button>ALL PRODUCTS</Button>
       </Link>
       <Link to={routes.PRODUCT_CREATE_PAGE}>

@@ -5,7 +5,8 @@
     color: black;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 40%;
+    width: 50%;
+    min-width: 400px;
     margin: 1rem auto;
     padding: 1rem 1.5rem;
     border: 2px solid colors.$border;

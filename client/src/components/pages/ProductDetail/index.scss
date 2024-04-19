@@ -15,4 +15,10 @@
     &_title {
         color: grey;
     }
+
+    &_actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.5rem;
+    }
 }
