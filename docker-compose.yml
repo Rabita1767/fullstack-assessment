@@ -9,4 +9,16 @@ services:
         image: postgres:15
         restart: on-failure
         ports:
-            - "5431:5432"
+            - "8765:5432"
+    server:
+        container_name: teebay-server
+        build: ./server
+        command: sh -c "npx prisma migrate dev && npx prisma db seed && npm run start"
+        environment:
+            - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/teebay?schema=public
+            - PORT=8000
+            - JWT_TOKEN=123456789
+        ports:
+            - "8000:8000"
+        depends_on:
+            - postgres
