@@ -125,6 +125,9 @@ const GQLTypes = `#graphql
             productId: Int,
             userId: Int,
         ): Purchase
+        deleteProduct(
+            productId: Int,
+        ): Product
     }
 `;
 

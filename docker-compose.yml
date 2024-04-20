@@ -10,6 +10,11 @@ services:
         restart: on-failure
         ports:
             - "8765:5432"
+        healthcheck:
+            test: "pg_isready -U postgres -d teebay"
+            interval: 5s
+            timeout: 5s
+            retries: 5
     server:
         container_name: teebay-server
         build: ./server
@@ -21,4 +26,14 @@ services:
         ports:
             - "8000:8000"
         depends_on:
-            - postgres
+            postgres:
+                condition: service_healthy
+    client:
+        container_name: teebay-client
+        build: ./client
+        command: npm run preview
+            - VITE_SERVER_URL=http://127.0.0.1:5000
+        ports:
+            - "5000:5000"
+        depends_on:
+            - server

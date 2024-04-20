@@ -16,6 +16,7 @@ class _Product_ {
                         NOT: {
                             userId: Number(args.userId),
                         },
+                        status: true,
                     },
                     include: {
                         category_product: {
@@ -33,6 +34,7 @@ class _Product_ {
                 products = await prisma.product.findMany({
                     where: {
                         userId: Number(args.userId),
+                        status: true,
                     },
                     include: {
                         category_product: {
@@ -61,6 +63,7 @@ class _Product_ {
                                 return element.productId;
                             }),
                         },
+                        status: true,
                     },
                     include: {
                         category_product: {
@@ -92,6 +95,7 @@ class _Product_ {
                                 return element.productId;
                             }),
                         },
+                        status: true,
                     },
                     include: {
                         category_product: {
@@ -119,6 +123,7 @@ class _Product_ {
                                 return element.productId;
                             }),
                         },
+                        status: true,
                     },
                     include: {
                         rent_instance: true,
@@ -154,6 +159,7 @@ class _Product_ {
                                 return element.product.userId;
                             }),
                         },
+                        status: true,
                     },
                     include: {
                         rent_instance: true,
@@ -292,6 +298,18 @@ class _Product_ {
 
         // console.log(product);
 
+        return product;
+    }
+
+    async deleteProduct(_: any, args: { productId: number }) {
+        const product = await prisma.product.update({
+            where: {
+                id: args.productId,
+            },
+            data: {
+                status: false,
+            },
+        });
         return product;
     }
 }

@@ -30,6 +30,7 @@ const resolvers = {
         productUpdate: Product.productUpdateMutation,
         rentProduct: Rent.rentProductMutation,
         purchaseProduct: Purchase.purchaseProduct,
+        deleteProduct: Product.deleteProduct,
     },
 };
 

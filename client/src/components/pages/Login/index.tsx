@@ -13,8 +13,8 @@ const Login: React.FC = () => {
     email: string;
     password: string;
   }>({
-    email: "snigdho.howlder@gmail.com",
-    password: "Abc@1234",
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
 
@@ -50,6 +50,13 @@ const Login: React.FC = () => {
         onSubmit={(e) => {
           e.preventDefault();
           // console.log(credentials);
+          if (credentials.email === "" || credentials.password === "") {
+            return notifications.show({
+              title: "Error",
+              message: "One or more of the fields are empty",
+              color: "red",
+            });
+          }
           triggerLogin({
             variables: {
               email: credentials.email,

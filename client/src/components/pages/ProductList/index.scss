@@ -1,0 +1,29 @@
+.productlist {
+
+    &_nav {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+        justify-content: center;
+
+        &_link {
+            color: cornflowerblue;
+            text-decoration: none;
+            font-weight: bold;
+
+            &--active {
+                @extend .productlist_nav_link;
+                border: 1px solid cornflowerblue;
+            }
+
+            :hover {
+                border: 1px solid navy;
+            }
+        }
+    }
+
+    &_list {
+        width: 70%;
+        margin: 0 auto;
+    }
+}

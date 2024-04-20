@@ -18,6 +18,8 @@ import {
   SINGLE_PRODUCT_QUERY,
   UPDATE_PRODUCT_QUERY,
 } from "../../../_types_/gql";
+import { AuthState } from "../../../store/auth";
+import { useSelector } from "react-redux";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -28,7 +30,9 @@ const EditProduct = () => {
     rent_amount: 0,
     rent_rate: "hours",
     category: [],
+    userId: -1,
   });
+  const auth = useSelector((x: { auth: AuthState }) => x.auth);
 
   const { data: productDetails } = useQuery(SINGLE_PRODUCT_QUERY, {
     variables: { id: id },
@@ -64,12 +68,13 @@ const EditProduct = () => {
         category: productDetails?.oneProduct.category_product.map(
           (element: { category: { id: string } }) => element.category.id
         ),
+        userId: Number(auth.user.id),
       });
       // setSelectedCategories(
       //   productDetails?.oneProduct.category_product.map((element) => element["id"])
       // );
     }
-  }, [productDetails]);
+  }, [productDetails, auth.user.id]);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();

@@ -23,6 +23,12 @@ async function main() {
                 address: "Dhaka, Bangladesh",
                 phone: "+8803333333333",
             },
+            {
+                first_name: "John",
+                last_name: "Doe",
+                address: "Dhaka, Bangladesh",
+                phone: "+8802222222222",
+            },
         ],
     });
 
@@ -46,6 +52,13 @@ async function main() {
                 email: "meraj.kabir@gmail.com",
                 password: "Abc@1234",
                 userId: 3,
+                admin: false,
+                status: true,
+            },
+            {
+                email: "john.doe@gmail.com",
+                password: "Abc@1234",
+                userId: 4,
                 admin: false,
                 status: true,
             },

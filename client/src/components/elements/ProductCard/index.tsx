@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.scss";
 // import { Link } from "react-router-dom";
 import { Button, Modal } from "@mantine/core";
@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AuthState } from "../../../store/auth";
 import routes from "../../../constants/routes";
+import { useMutation } from "@apollo/client";
+import { notifications } from "@mantine/notifications";
+import { DELETE_PRODUCT_MUTATION } from "../../../_types_/gql";
 
 interface IProductCard {
   id: number;
@@ -35,10 +38,32 @@ const ProductCard: React.FC<IProductCard> = ({
   const [seeMore, setSeeMore] = useState<boolean>(
     description.length > 220 ? true : false
   );
-  // const [opened, {open, close}] = useDisclosure
-  const [modal, setModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const auth = useSelector((x: { auth: AuthState }) => x.auth);
+  const [
+    triggerDeleteProduct,
+    { data: deleteProduct, error: deleteProductError },
+  ] = useMutation(DELETE_PRODUCT_MUTATION);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (deleteProduct) {
+      notifications.show({
+        title: "Success",
+        message: "Successfully deleted product",
+        color: "green",
+      });
+      setDeleteModal(false);
+      navigate("/products/self");
+    }
+    if (deleteProductError) {
+      notifications.show({
+        title: "Error",
+        message: deleteProductError.message,
+        color: "red",
+      });
+    }
+  }, [deleteProduct, deleteProductError, navigate]);
 
   return (
     <div
@@ -46,16 +71,26 @@ const ProductCard: React.FC<IProductCard> = ({
       // to={`/private/products/detail/${id}`}
     >
       <Modal
-        opened={modal}
-        onClose={() => setModal(false)}
+        opened={deleteModal}
+        onClose={() => setDeleteModal(false)}
         className="productcard_modal"
       >
         <span>Are you sure you want to delete this product?</span>
         <div className="productcard_modal_buttons">
-          <Button color="red" onClick={() => setModal(false)}>
+          <Button color="red" onClick={() => setDeleteModal(false)}>
             No
           </Button>
-          <Button>Yes</Button>
+          <Button
+            onClick={() => {
+              triggerDeleteProduct({
+                variables: {
+                  productId: Number(id),
+                },
+              });
+            }}
+          >
+            Yes
+          </Button>
         </div>
       </Modal>
       <span className="productcard_title">{title}</span>
@@ -83,7 +118,7 @@ const ProductCard: React.FC<IProductCard> = ({
             <button
               className="productcard_deletebtn"
               onClick={() => {
-                setModal(true);
+                setDeleteModal(true);
               }}
             >
               <FontAwesomeIcon icon={faTrashAlt} />

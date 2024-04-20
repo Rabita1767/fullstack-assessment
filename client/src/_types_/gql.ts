@@ -234,3 +234,29 @@ export const SIGNUP_QUERY = gql`
     }
   }
 `;
+
+export const DELETE_PRODUCT_MUTATION = gql`
+  mutation Mutation($productId: Int!) {
+    deleteProduct(productId: $productId) {
+      id
+      title
+      description
+      price
+      rent_amount
+      rent_rate
+      posted
+      views
+      status
+      user {
+        id
+      }
+      category_product {
+        id
+        category {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
