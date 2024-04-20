@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { RENT_PRODUCT, SINGLE_PRODUCT_QUERY } from "../../../_types_/gql";
-import { useParams } from "react-router-dom";
+import {
+  PURCHASE_PRODUCT_MUTATION,
+  RENT_PRODUCT,
+  SINGLE_PRODUCT_QUERY,
+} from "../../../_types_/gql";
+import { useNavigate, useParams } from "react-router-dom";
 import "./index.scss";
 import Layout from "../../layouts/Layout";
 import { Button, Input, Modal } from "@mantine/core";
@@ -16,12 +20,18 @@ const ProductDetail = () => {
   });
   const [triggerRentProduct, { data: rentProduct, error: rentProductError }] =
     useMutation(RENT_PRODUCT);
+  const [
+    triggerPurchaseProduct,
+    { data: purchaseProduct, error: purchaseProductError },
+  ] = useMutation(PURCHASE_PRODUCT_MUTATION);
+
   const [rentModal, setRentModal] = useState<boolean>(false);
   const [purchaseModal, setPurchaseModal] = useState<boolean>(false);
   const [fromDate, setFromDate] = useState<string>("");
   const [toDate, setToDate] = useState<string>("");
 
   const auth = useSelector((x: { auth: AuthState }) => x.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (rentProduct) {
@@ -31,6 +41,7 @@ const ProductDetail = () => {
         color: "green",
       });
       setRentModal(false);
+      navigate("/products/borrowed");
     }
     if (rentProductError) {
       notifications.show({
@@ -39,7 +50,26 @@ const ProductDetail = () => {
         color: "red",
       });
     }
-  }, [rentProduct, rentProductError]);
+  }, [rentProduct, rentProductError, navigate]);
+
+  useEffect(() => {
+    if (purchaseProduct) {
+      notifications.show({
+        title: "Success",
+        message: "Successfully purchased product",
+        color: "green",
+      });
+      setRentModal(false);
+      navigate("/products/bought");
+    }
+    if (purchaseProductError) {
+      notifications.show({
+        title: "Error",
+        message: purchaseProductError.message,
+        color: "red",
+      });
+    }
+  }, [purchaseProduct, purchaseProductError, navigate]);
 
   return (
     <Layout>
@@ -107,6 +137,12 @@ const ProductDetail = () => {
             <Button
               onClick={() => {
                 //
+                triggerPurchaseProduct({
+                  variables: {
+                    productId: Number(id),
+                    userId: Number(auth.user.id),
+                  },
+                });
               }}
             >
               Yes
@@ -126,6 +162,9 @@ const ProductDetail = () => {
               (element: { category: { name: string } }) => element.category.name
             )
             .join(", ")}
+          {/* category_product
+                  ?.map((category_product) => category_product.category.name)
+                  .join(", ") */}
         </span>
         <span>Price: ${productDetails?.oneProduct.price}</span>
         <span className="main_description">

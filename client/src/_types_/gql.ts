@@ -16,6 +16,7 @@ export const ALL_PRODUCT_LIST_QUERY = gql`
         id
       }
       category_product {
+        id
         category {
           id
           name
@@ -166,6 +167,16 @@ export const RENT_PRODUCT = gql`
         address
         phone
       }
+    }
+  }
+`;
+
+export const PURCHASE_PRODUCT_MUTATION = gql`
+  mutation Mutation($productId: Int!, $userId: Int!) {
+    purchaseProduct(productId: $productId, userId: $userId) {
+      id
+      userId
+      productId
     }
   }
 `;

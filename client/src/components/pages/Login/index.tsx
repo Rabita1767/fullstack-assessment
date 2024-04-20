@@ -7,7 +7,6 @@ import { notifications } from "@mantine/notifications";
 import { LOGIN_QUERY } from "../../../_types_/gql";
 import { useDispatch } from "react-redux";
 import { saveLogin } from "../../../store/auth";
-import routes from "../../../constants/routes";
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState<{
@@ -39,7 +38,7 @@ const Login: React.FC = () => {
         color: "green",
       });
       dispatch(saveLogin(loginData.login));
-      navigate(routes.ALL_PRODUCT_LIST_PAGE);
+      navigate(`/products/self`);
     }
   }, [loginData, loginDataError, navigate, dispatch]);
 

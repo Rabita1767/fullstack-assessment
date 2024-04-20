@@ -52,9 +52,46 @@ class _Product_ {
                         userId: Number(args.userId),
                     },
                 });
+                console.log(purchases);
                 products = await prisma.product.findMany({
                     where: {
-                        userId: Number(args.userId),
+                        // userId: Number(args.userId),
+                        id: {
+                            in: purchases.map((element) => {
+                                return element.productId;
+                            }),
+                        },
+                    },
+                    include: {
+                        category_product: {
+                            include: {
+                                category: true,
+                            },
+                            take: 100,
+                        },
+                        user: true,
+                    },
+                });
+                break;
+            }
+            case "sold": {
+                const purchases = await prisma.purchases.findMany({
+                    where: {
+                        product: {
+                            userId: Number(args.userId),
+                        },
+                        // userId: Number(args.userId),
+                    },
+                });
+                console.log(purchases);
+                products = await prisma.product.findMany({
+                    where: {
+                        // userId: Number(args.userId),
+                        id: {
+                            in: purchases.map((element) => {
+                                return element.productId;
+                            }),
+                        },
                     },
                     include: {
                         category_product: {
@@ -86,6 +123,12 @@ class _Product_ {
                     include: {
                         rent_instance: true,
                         user: true,
+                        category_product: {
+                            include: {
+                                category: true,
+                            },
+                            take: 100,
+                        },
                     },
                 });
                 // console.log(products);
@@ -115,6 +158,12 @@ class _Product_ {
                     include: {
                         rent_instance: true,
                         user: true,
+                        category_product: {
+                            include: {
+                                category: true,
+                            },
+                            take: 100,
+                        },
                     },
                 });
                 // console.log(products);

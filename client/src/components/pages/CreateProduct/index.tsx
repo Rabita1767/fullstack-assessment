@@ -10,7 +10,6 @@ import {
 } from "../../../_types_/gql";
 import { useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
-import routes from "../../../constants/routes";
 import { useSelector } from "react-redux";
 import { AuthState } from "../../../store/auth";
 
